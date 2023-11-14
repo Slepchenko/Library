@@ -1,7 +1,5 @@
 package library.model;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public class User {
@@ -16,7 +14,10 @@ public class User {
 
     private int telephoneNumber;
 
-    private int totalSum;
+    private int increaseSpend;
+
+    public User() {
+    }
 
     public User(int id, String surname, String name, String patronymic, int telephoneNumber) {
         this.id = id;
@@ -66,12 +67,12 @@ public class User {
         this.telephoneNumber = telephoneNumber;
     }
 
-    public int getTotalSum() {
-        return totalSum;
+    public int getIncreaseSpend() {
+        return increaseSpend;
     }
 
-    public void setTotalSum(int totalSum) {
-        this.totalSum = totalSum;
+    public void setIncreaseSpend(int increaseSpend) {
+        this.increaseSpend = increaseSpend;
     }
 
     @Override

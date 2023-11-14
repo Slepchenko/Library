@@ -15,6 +15,9 @@ public class BorrowedBook {
 
     private LocalDateTime refundDate;
 
+    public BorrowedBook() {
+    }
+
     public BorrowedBook(int id, Book book, User user, LocalDateTime borrowDate, LocalDateTime refundDate) {
         this.id = id;
         this.book = book;

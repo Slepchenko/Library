@@ -16,6 +16,9 @@ public class Book {
 
     private String genre;
 
+    public Book() {
+    }
+
     public Book(int id, String name, String author, int depositPrice, int rentalPrice, String genre) {
         this.id = id;
         this.name = name;
