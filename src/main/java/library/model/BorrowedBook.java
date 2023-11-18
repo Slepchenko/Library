@@ -1,9 +1,18 @@
 package library.model;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.Objects;
 
 public class BorrowedBook {
+
+    public static final Map<String, String> COLUMN_MAPPING = Map.of(
+            "id", "id",
+            "book", "book",
+            "user", "user",
+            "borrow_date", "borrowDate",
+            "refund_date", "refundDate"
+            );
 
     private int id;
 

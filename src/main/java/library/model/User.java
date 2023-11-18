@@ -1,8 +1,16 @@
 package library.model;
 
+import java.util.Map;
 import java.util.Objects;
 
 public class User {
+
+    public static final Map<String, String> COLUMN_MAPPING = Map.of(
+            "id", "id",
+            "surname", "surname",
+            "email", "email",
+            "password", "password"
+    );
 
     private int id;
 
@@ -16,15 +24,23 @@ public class User {
 
     private int increaseSpend;
 
+    private String email;
+
+    private String password;
+
     public User() {
     }
 
-    public User(int id, String surname, String name, String patronymic, int telephoneNumber) {
+    public User(
+            int id, String surname, String name, String patronymic,
+            int telephoneNumber, String email, String password) {
         this.id = id;
         this.surname = surname;
         this.name = name;
         this.patronymic = patronymic;
         this.telephoneNumber = telephoneNumber;
+        this.email = email;
+        this.password = password;
     }
 
     public int getId() {
@@ -65,6 +81,22 @@ public class User {
 
     public void setTelephoneNumber(int telephoneNumber) {
         this.telephoneNumber = telephoneNumber;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public int getIncreaseSpend() {

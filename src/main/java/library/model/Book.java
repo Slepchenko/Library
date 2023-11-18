@@ -1,8 +1,18 @@
 package library.model;
 
+import java.util.Map;
 import java.util.Objects;
 
 public class Book {
+
+    public static final Map<String, String> COLUMN_MAPPING = Map.of(
+            "id", "id",
+            "name", "name",
+            "author", "author",
+            "deposit_price", "depositPrice",
+            "rental_price", "rentalPrice",
+            "genre", "genre"
+    );
 
     private int id;
 
