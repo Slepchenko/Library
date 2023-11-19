@@ -10,10 +10,10 @@ import java.util.Optional;
 @Service
 public class SimpleBorrowedBookService implements BorrowedBookService {
 
-    private final BorrowedBookRepository bookRepository;
+    private final BorrowedBookRepository borrowedBookRepository;
 
-    public SimpleBorrowedBookService(BorrowedBookRepository bookRepository) {
-        this.bookRepository = bookRepository;
+    public SimpleBorrowedBookService(BorrowedBookRepository sql2oBorrowedBookRepository) {
+        this.borrowedBookRepository = sql2oBorrowedBookRepository;
     }
 
     @Override

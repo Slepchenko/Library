@@ -12,23 +12,18 @@ public class SimpleBookService implements BookService {
 
     private final BookRepository bookRepository;
 
-    public SimpleBookService(BookRepository bookRepository) {
-        this.bookRepository = bookRepository;
-    }
-
-    @Override
-    public Optional<Book> findByName(String name) {
-        return Optional.empty();
+    public SimpleBookService(BookRepository sql2oBookRepository) {
+        this.bookRepository = sql2oBookRepository;
     }
 
     @Override
     public Optional<Book> findById(int id) {
-        return Optional.empty();
+        return bookRepository.findById(id);
     }
 
     @Override
     public Collection<Book> findAll() {
-        return null;
+        return bookRepository.findAll();
     }
 
 }

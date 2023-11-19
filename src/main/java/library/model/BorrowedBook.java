@@ -11,7 +11,8 @@ public class BorrowedBook {
             "book", "book",
             "user", "user",
             "borrow_date", "borrowDate",
-            "refund_date", "refundDate"
+            "refund_date", "refundDate",
+            "user_id", "userId"
             );
 
     private int id;
@@ -24,15 +25,18 @@ public class BorrowedBook {
 
     private LocalDateTime refundDate;
 
+    private int userId;
+
     public BorrowedBook() {
     }
 
-    public BorrowedBook(int id, Book book, User user, LocalDateTime borrowDate, LocalDateTime refundDate) {
+    public BorrowedBook(int id, Book book, User user, LocalDateTime borrowDate, LocalDateTime refundDate, int userId) {
         this.id = id;
         this.book = book;
         this.user = user;
         this.borrowDate = borrowDate;
         this.refundDate = refundDate;
+        this.userId = userId;
     }
 
     public int getId() {
@@ -75,10 +79,19 @@ public class BorrowedBook {
         this.refundDate = refundDate;
     }
 
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
     @Override
     public boolean equals(Object o) {
-        if (this == o)
+        if (this == o) {
             return true;
+        }
         if (o == null || getClass() != o.getClass()) {
             return false;
         }

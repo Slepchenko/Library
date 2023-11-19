@@ -23,7 +23,8 @@ create table borrowed_books
 	id serial primary key,
 	book_id int references books (id) not null,
 	borrow_date timestamp not null,
-	refund_date timestamp not null
+	refund_date timestamp not null,
+	user_id int references users (id) not null
 );
 
 create table files
