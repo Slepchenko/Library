@@ -19,17 +19,17 @@ public class SimpleFileService implements FileService {
        this.fileRepository = sql2oFileRepository;
     }
 
-    private void createStorageDirectory(String path) {
-        try {
-            Files.createDirectories(Path.of(path));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
+//    private void createStorageDirectory(String path) {
+//        try {
+//            Files.createDirectories(Path.of(path));
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
 
     @Override
     public Optional<File> getFileById(int id) {
-        return Optional.empty();
+        return fileRepository.findById(id);
     }
 
 }

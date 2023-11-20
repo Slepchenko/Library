@@ -11,7 +11,8 @@ public class Book {
             "author", "author",
             "deposit_price", "depositPrice",
             "rental_price", "rentalPrice",
-            "genre", "genre"
+            "genre", "genre",
+            "file_id", "fileId"
     );
 
     private int id;
@@ -26,16 +27,19 @@ public class Book {
 
     private String genre;
 
+    private int fileId;
+
     public Book() {
     }
 
-    public Book(int id, String name, String author, int depositPrice, int rentalPrice, String genre) {
+    public Book(int id, String name, String author, int depositPrice, int rentalPrice, String genre, int fileId) {
         this.id = id;
         this.name = name;
         this.author = author;
         this.depositPrice = depositPrice;
         this.rentalPrice = rentalPrice;
         this.genre = genre;
+        this.fileId = fileId;
     }
 
     public int getId() {
@@ -84,6 +88,14 @@ public class Book {
 
     public void setGenre(String genre) {
         this.genre = genre;
+    }
+
+    public int getFileId() {
+        return fileId;
+    }
+
+    public void setFileId(int fileId) {
+        this.fileId = fileId;
     }
 
     @Override

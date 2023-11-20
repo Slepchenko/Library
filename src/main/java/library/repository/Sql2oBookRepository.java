@@ -24,7 +24,6 @@ public class Sql2oBookRepository implements BookRepository {
             var book = query.setColumnMappings(Book.COLUMN_MAPPING).executeAndFetchFirst(Book.class);
             return Optional.ofNullable(book);
         }
-//        return null;
     }
 
     @Override
