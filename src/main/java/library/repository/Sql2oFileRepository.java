@@ -2,6 +2,8 @@ package library.repository;
 
 import library.model.File;
 import org.springframework.stereotype.Repository;
+import org.sql2o.Connection;
+import org.sql2o.Query;
 import org.sql2o.Sql2o;
 
 import java.util.Optional;
@@ -17,9 +19,9 @@ public class Sql2oFileRepository implements FileRepository {
 
     @Override
     public Optional<File> findById(int id) {
-        try (var connection = sql2o.open()) {
-            var query = connection.createQuery("SELECT * FROM files WHERE id = :id");
-            var file = query.addParameter("id", id).executeAndFetchFirst(File.class);
+        try (Connection connection = sql2o.open()) {
+            Query query = connection.createQuery("SELECT * FROM files WHERE id = :id");
+            File file = query.addParameter("id", id).executeAndFetchFirst(File.class);
             return Optional.ofNullable(file);
         }
     }

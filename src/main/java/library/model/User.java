@@ -7,22 +7,20 @@ public class User {
 
     public static final Map<String, String> COLUMN_MAPPING = Map.of(
             "id", "id",
-            "surname", "surname",
+            "name", "name",
+            "increase_spend", "increaseSpend",
+            "total", "total",
             "email", "email",
             "password", "password"
     );
 
     private int id;
 
-    private String surname;
-
     private String name;
 
-    private String patronymic;
-
-    private int telephoneNumber;
-
     private int increaseSpend;
+
+    private int total;
 
     private String email;
 
@@ -31,14 +29,11 @@ public class User {
     public User() {
     }
 
-    public User(
-            int id, String surname, String name, String patronymic,
-            int telephoneNumber, String email, String password) {
+    public User(int id, String name, int increaseSpend, int total, String email, String password) {
         this.id = id;
-        this.surname = surname;
         this.name = name;
-        this.patronymic = patronymic;
-        this.telephoneNumber = telephoneNumber;
+        this.increaseSpend = increaseSpend;
+        this.total = total;
         this.email = email;
         this.password = password;
     }
@@ -51,14 +46,6 @@ public class User {
         this.id = id;
     }
 
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
     public String getName() {
         return name;
     }
@@ -67,20 +54,20 @@ public class User {
         this.name = name;
     }
 
-    public String getPatronymic() {
-        return patronymic;
+    public int getIncreaseSpend() {
+        return increaseSpend;
     }
 
-    public void setPatronymic(String patronymic) {
-        this.patronymic = patronymic;
+    public void setIncreaseSpend(int increaseSpend) {
+        this.increaseSpend = increaseSpend;
     }
 
-    public int getTelephoneNumber() {
-        return telephoneNumber;
+    public int getTotal() {
+        return total;
     }
 
-    public void setTelephoneNumber(int telephoneNumber) {
-        this.telephoneNumber = telephoneNumber;
+    public void setTotal(int total) {
+        this.total = total;
     }
 
     public String getEmail() {
@@ -97,14 +84,6 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public int getIncreaseSpend() {
-        return increaseSpend;
-    }
-
-    public void setIncreaseSpend(int increaseSpend) {
-        this.increaseSpend = increaseSpend;
     }
 
     @Override

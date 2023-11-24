@@ -1,0 +1,54 @@
+package library.repository;
+
+import library.model.User;
+import org.springframework.stereotype.Repository;
+import org.sql2o.Connection;
+import org.sql2o.Query;
+import org.sql2o.Sql2o;
+
+import java.util.Optional;
+
+@Repository
+public class Sql2oUserRepository implements UserRepository {
+
+    private final Sql2o sql2o;
+
+    public Sql2oUserRepository(Sql2o sql2o) {
+        this.sql2o = sql2o;
+    }
+
+    @Override
+    public Optional<User> save(User user) {
+        try (var connection = sql2o.open()) {
+            String sql = """
+                    INSERT INTO users(name, increase_spend, total, email, password)
+                    VALUES (:name, :increaseSpend, :total, :email, :password)
+                    """;
+            Query query = connection.createQuery(sql, true)
+                    .addParameter("name", user.getName())
+                    .addParameter("increaseSpend", user.getIncreaseSpend())
+                    .addParameter("total", user.getTotal())
+                    .addParameter("email", user.getEmail())
+                    .addParameter("password", user.getPassword());
+            int generatedId = query.executeUpdate().getKey(Integer.class);
+            user.setId(generatedId);
+            Optional<User> optionalUser = Optional.of(user);
+            return optionalUser;
+        } catch (Exception exception) {
+            exception.getMessage();
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<User> findByEmailAndPassword(String email, String password) {
+        try (Connection connection = sql2o.open()) {
+            var query = connection.createQuery("SELECT * FROM users WHERE email = :email and password = :password")
+                    .addParameter("email", email)
+                    .addParameter("password", password);
+            var user = query.setColumnMappings(User.COLUMN_MAPPING).executeAndFetchFirst(User.class);
+            return Optional.ofNullable(user);
+        }
+    }
+
+}

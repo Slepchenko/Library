@@ -12,12 +12,17 @@
           integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V"
           crossorigin="anonymous"></script>
 
-  <title>Залы</title>
+  <title>Редкие книги</title>
 </head>
 <body>
 <div class="container-fluid p-0">
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <header th:insert="blocks/header :: header"></header>
+    <div class="d-flex" th:if="${user.name == 'Гость'}">
+      <a class="nav-link text-secondary me-3" th:href="@{/users/register}">Регистрация</a>
+      <a class="nav-link text-secondary" th:href="@{/users/login}">Войти</a>
+    </div>
+
   </nav>
   <div class="container">
     <div class="row">
