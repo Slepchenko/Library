@@ -8,35 +8,40 @@ public class BorrowedBook {
 
     public static final Map<String, String> COLUMN_MAPPING = Map.of(
             "id", "id",
-            "book", "book",
-            "user", "user",
-            "borrow_date", "borrowDate",
-            "refund_date", "refundDate",
-            "user_id", "userId"
-            );
+            "book_id", "bookId",
+            "user_id", "userId",
+            "term", "term"
+//            "borrow_date", "borrowDate",
+//            "refund_date", "refundDate"
+    );
 
     private int id;
 
-    private Book book;
-
-    private User user;
-
-    private LocalDateTime borrowDate;
-
-    private LocalDateTime refundDate;
+    private int bookId;
 
     private int userId;
+
+    private int deposit;
+
+    private int term;
+
+//    private LocalDateTime borrowDate;
+//
+//    private LocalDateTime refundDate;
+
 
     public BorrowedBook() {
     }
 
-    public BorrowedBook(int id, Book book, User user, LocalDateTime borrowDate, LocalDateTime refundDate, int userId) {
+    //    public BorrowedBook(int id, int bookId, int userId, LocalDateTime borrowDate, LocalDateTime refundDate) {
+    public BorrowedBook(int id, int bookId, int userId, int deposit, int term) {
         this.id = id;
-        this.book = book;
-        this.user = user;
-        this.borrowDate = borrowDate;
-        this.refundDate = refundDate;
+        this.bookId = bookId;
         this.userId = userId;
+        this.deposit = deposit;
+        this.term = term;
+//        this.borrowDate = borrowDate;
+//        this.refundDate = refundDate;
     }
 
     public int getId() {
@@ -47,37 +52,29 @@ public class BorrowedBook {
         this.id = id;
     }
 
-    public Book getBook() {
-        return book;
+    public int getBookId() {
+        return bookId;
     }
 
-    public void setBook(Book book) {
-        this.book = book;
+    public void setBookId(int bookId) {
+        this.bookId = bookId;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public LocalDateTime getBorrowDate() {
-        return borrowDate;
-    }
-
-    public void setBorrowDate(LocalDateTime borrowDate) {
-        this.borrowDate = borrowDate;
-    }
-
-    public LocalDateTime getRefundDate() {
-        return refundDate;
-    }
-
-    public void setRefundDate(LocalDateTime refundDate) {
-        this.refundDate = refundDate;
-    }
+    //    public LocalDateTime getBorrowDate() {
+//        return borrowDate;
+//    }
+//
+//    public void setBorrowDate(LocalDateTime borrowDate) {
+//        this.borrowDate = borrowDate;
+//    }
+//
+//    public LocalDateTime getRefundDate() {
+//        return refundDate;
+//    }
+//
+//    public void setRefundDate(LocalDateTime refundDate) {
+//        this.refundDate = refundDate;
+//    }
 
     public int getUserId() {
         return userId;
@@ -85,6 +82,22 @@ public class BorrowedBook {
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    public int getDeposit() {
+        return deposit;
+    }
+
+    public void setDeposit(int deposit) {
+        this.deposit = deposit;
+    }
+
+    public int getTerm() {
+        return term;
+    }
+
+    public void setTerm(int term) {
+        this.term = term;
     }
 
     @Override

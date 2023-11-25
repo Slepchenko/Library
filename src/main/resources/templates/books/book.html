@@ -41,15 +41,6 @@
             <h3 th:text="${deposit}"></h3><br>
         </div>
 
-        <div class="mb-3">
-            <div class="col-6">
-            <label for="count"><b>Выберите колличество месяцев</b></label>
-            <select class="form-control" id="count" name="count" style="max-width:5%">
-                <option th:each="month : ${months}" th:value="${month}" th:text="${month}"></option>
-            </select>
-            </div>
-        </div>
-
         <div class="mb-3 row">
 
             <div class="col-6">

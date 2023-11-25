@@ -47,7 +47,6 @@ public class BookController {
         model.addAttribute("deposit", "Залог " + optionalBook.get().getDepositPrice() + " рублей");
         model.addAttribute("rental", "Стоимость аренды книги " + optionalBook.get().getRentalPrice() + " рублей в месяц");
         model.addAttribute("file", fileService.getFileById(optionalBook.get().getFileId()).get().getPath());
-        model.addAttribute("months", new int[]{1, 2, 3, 4, 5, 6});
         return "books/book";
     }
 
