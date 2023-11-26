@@ -22,6 +22,8 @@ public class BorrowedBookController {
 
     private final BorrowedBookService borrowedBookService;
 
+    private  BorrowedBook saveBook;
+
     public BorrowedBookController(BookService bookService, BorrowedBookService borrowedBookService) {
         this.bookService = bookService;
         this.borrowedBookService = borrowedBookService;
@@ -44,6 +46,8 @@ public class BorrowedBookController {
     @PostMapping("/execution")
     public String execution(Model model, @ModelAttribute BorrowedBook borrowedBook, HttpSession session) {
         checkInMenu(model, session);
+        String reference = "/borrowedBooks/pay";
+        saveBook = borrowedBook;
         Book book = bookService.findById(borrowedBook.getBookId()).get();
         model.addAttribute("borrowedBook", borrowedBook);
         model.addAttribute("bookMessage", book.getName());
@@ -51,7 +55,24 @@ public class BorrowedBookController {
         model.addAttribute("depositMessage", borrowedBook.getDeposit() + " рублей");
         model.addAttribute("priceMessage", book.getRentalPrice() + " рублей");
         model.addAttribute("discountMessage", "0" + " рублей");
-        return "/borrowedBooks/pay";
+        return validAmount(borrowedBook.getDeposit(), book.getDepositPrice(), model, reference);
+    }
+
+    @PostMapping("/pay")
+    public String save(Model model, @ModelAttribute BorrowedBook borrowedBook, HttpSession session) {
+        checkInMenu(model, session);
+        String reference = "/borrowedBooks/successfully";
+        saveBook.setRental(borrowedBook.getRental());
+        Book book = bookService.findById(saveBook.getBookId()).get();
+        model.addAttribute("borrowedBook", saveBook);
+        String result = validAmount(saveBook.getRental(), book.getRentalPrice(), model, reference);
+        try {
+            borrowedBookService.save(saveBook);
+            return result;
+        } catch (Exception e) {
+            model.addAttribute("message", e.getMessage());
+            return "errors/404";
+        }
     }
 
     private void checkInMenu(Model model, HttpSession session) {
@@ -61,6 +82,19 @@ public class BorrowedBookController {
             user.setName("Гость");
         }
         model.addAttribute("user", user);
+    }
+
+    private String validAmount(int amount, int price, Model model, String reference) {
+        String result = reference;
+        if (Integer.compare(amount, price) == 1) {
+            model.addAttribute("message", "Сумма превосходит трубуемую, попробуйте ещё раз");
+            result = "/errors/404";
+        }
+        if (Integer.compare(amount, price) == -1) {
+            model.addAttribute("message", "Внесенной суммы недостаточно, попробуйте ещё раз");
+            result = "/errors/404";
+        }
+        return result;
     }
 
 }

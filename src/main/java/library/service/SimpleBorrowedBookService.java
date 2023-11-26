@@ -18,12 +18,17 @@ public class SimpleBorrowedBookService implements BorrowedBookService {
 
     @Override
     public Optional<BorrowedBook> findById(int id) {
-        return Optional.empty();
+        return borrowedBookRepository.findById(id);
     }
 
     @Override
     public Collection<BorrowedBook> findAll() {
-        return null;
+        return borrowedBookRepository.findAll();
+    }
+
+    @Override
+    public Optional<BorrowedBook> save(BorrowedBook borrowedBook) {
+        return borrowedBookRepository.save(borrowedBook);
     }
 
 }

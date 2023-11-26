@@ -1,6 +1,5 @@
 package library.model;
 
-import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Objects;
 
@@ -10,6 +9,8 @@ public class BorrowedBook {
             "id", "id",
             "book_id", "bookId",
             "user_id", "userId",
+            "deposit", "deposit",
+            "rental", "rental",
             "term", "term"
 //            "borrow_date", "borrowDate",
 //            "refund_date", "refundDate"
@@ -23,6 +24,8 @@ public class BorrowedBook {
 
     private int deposit;
 
+    private int rental;
+
     private int term;
 
 //    private LocalDateTime borrowDate;
@@ -34,11 +37,12 @@ public class BorrowedBook {
     }
 
     //    public BorrowedBook(int id, int bookId, int userId, LocalDateTime borrowDate, LocalDateTime refundDate) {
-    public BorrowedBook(int id, int bookId, int userId, int deposit, int term) {
+    public BorrowedBook(int id, int bookId, int userId, int deposit, int rental, int term) {
         this.id = id;
         this.bookId = bookId;
         this.userId = userId;
         this.deposit = deposit;
+        this.rental = rental;
         this.term = term;
 //        this.borrowDate = borrowDate;
 //        this.refundDate = refundDate;
@@ -90,6 +94,14 @@ public class BorrowedBook {
 
     public void setDeposit(int deposit) {
         this.deposit = deposit;
+    }
+
+    public int getRental() {
+        return rental;
+    }
+
+    public void setRental(int rental) {
+        this.rental = rental;
     }
 
     public int getTerm() {

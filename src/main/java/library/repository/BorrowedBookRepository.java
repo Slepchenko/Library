@@ -12,4 +12,6 @@ public interface BorrowedBookRepository {
 
     Collection<BorrowedBook> findAll();
 
+    Optional<BorrowedBook> save(BorrowedBook borrowedBook);
+
 }
