@@ -1,5 +1,6 @@
 package library.controller;
 
+import library.FinallyPrice;
 import library.model.Book;
 import library.model.BorrowedBook;
 import library.model.User;
@@ -22,7 +23,9 @@ public class BorrowedBookController {
 
     private final BorrowedBookService borrowedBookService;
 
-    private  BorrowedBook saveBook;
+    private BorrowedBook saveBorrowedBook;
+
+    private int discountRental;
 
     public BorrowedBookController(BookService bookService, BorrowedBookService borrowedBookService) {
         this.bookService = bookService;
@@ -47,14 +50,15 @@ public class BorrowedBookController {
     public String execution(Model model, @ModelAttribute BorrowedBook borrowedBook, HttpSession session) {
         checkInMenu(model, session);
         String reference = "/borrowedBooks/pay";
-        saveBook = borrowedBook;
+        saveBorrowedBook = borrowedBook;
         Book book = bookService.findById(borrowedBook.getBookId()).get();
+        discountRental = FinallyPrice.getFinallyPrice(saveBorrowedBook.getTerm(), book.getRentalPrice());
         model.addAttribute("borrowedBook", borrowedBook);
         model.addAttribute("bookMessage", book.getName());
         model.addAttribute("termMessage", borrowedBook.getTerm() + " месяц(ев)");
         model.addAttribute("depositMessage", borrowedBook.getDeposit() + " рублей");
-        model.addAttribute("priceMessage", book.getRentalPrice() + " рублей");
-        model.addAttribute("discountMessage", "0" + " рублей");
+        model.addAttribute("priceMessage", discountRental + " рублей");
+        model.addAttribute("discountMessage", FinallyPrice.discount(saveBorrowedBook.getTerm()));
         return validAmount(borrowedBook.getDeposit(), book.getDepositPrice(), model, reference);
     }
 
@@ -62,12 +66,11 @@ public class BorrowedBookController {
     public String save(Model model, @ModelAttribute BorrowedBook borrowedBook, HttpSession session) {
         checkInMenu(model, session);
         String reference = "/borrowedBooks/successfully";
-        saveBook.setRental(borrowedBook.getRental());
-        Book book = bookService.findById(saveBook.getBookId()).get();
-        model.addAttribute("borrowedBook", saveBook);
-        String result = validAmount(saveBook.getRental(), book.getRentalPrice(), model, reference);
+        saveBorrowedBook.setRental(borrowedBook.getRental());
+        model.addAttribute("borrowedBook", saveBorrowedBook);
+        String result = validAmount(saveBorrowedBook.getRental(), discountRental, model, reference);
         try {
-            borrowedBookService.save(saveBook);
+            borrowedBookService.save(saveBorrowedBook);
             return result;
         } catch (Exception e) {
             model.addAttribute("message", e.getMessage());

@@ -18,6 +18,7 @@ public class SimpleBorrowedBookService implements BorrowedBookService {
 
     @Override
     public Optional<BorrowedBook> findById(int id) {
+        BorrowedBook borrowedBook = borrowedBookRepository.findById(id).get();
         return borrowedBookRepository.findById(id);
     }
 

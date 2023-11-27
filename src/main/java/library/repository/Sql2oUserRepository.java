@@ -21,13 +21,12 @@ public class Sql2oUserRepository implements UserRepository {
     public Optional<User> save(User user) {
         try (var connection = sql2o.open()) {
             String sql = """
-                    INSERT INTO users(name, increase_spend, total, email, password)
-                    VALUES (:name, :increaseSpend, :total, :email, :password)
+                    INSERT INTO users(name, discount_points, email, password)
+                    VALUES (:name, :discountPoints, :email, :password)
                     """;
             Query query = connection.createQuery(sql, true)
                     .addParameter("name", user.getName())
-                    .addParameter("increaseSpend", user.getIncreaseSpend())
-                    .addParameter("total", user.getTotal())
+                    .addParameter("discountPoints", user.getDiscountPoints())
                     .addParameter("email", user.getEmail())
                     .addParameter("password", user.getPassword());
             int generatedId = query.executeUpdate().getKey(Integer.class);

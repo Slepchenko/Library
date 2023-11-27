@@ -8,8 +8,7 @@ public class User {
     public static final Map<String, String> COLUMN_MAPPING = Map.of(
             "id", "id",
             "name", "name",
-            "increase_spend", "increaseSpend",
-            "total", "total",
+            "discount_points", "discountPoints",
             "email", "email",
             "password", "password"
     );
@@ -18,9 +17,7 @@ public class User {
 
     private String name;
 
-    private int increaseSpend;
-
-    private int total;
+    private int discountPoints;
 
     private String email;
 
@@ -29,11 +26,10 @@ public class User {
     public User() {
     }
 
-    public User(int id, String name, int increaseSpend, int total, String email, String password) {
+    public User(int id, String name, int discountPoints, String email, String password) {
         this.id = id;
         this.name = name;
-        this.increaseSpend = increaseSpend;
-        this.total = total;
+        this.discountPoints = discountPoints;
         this.email = email;
         this.password = password;
     }
@@ -54,20 +50,12 @@ public class User {
         this.name = name;
     }
 
-    public int getIncreaseSpend() {
-        return increaseSpend;
+    public int getDiscountPoints() {
+        return discountPoints;
     }
 
-    public void setIncreaseSpend(int increaseSpend) {
-        this.increaseSpend = increaseSpend;
-    }
-
-    public int getTotal() {
-        return total;
-    }
-
-    public void setTotal(int total) {
-        this.total = total;
+    public void setDiscountPoints(int discountPoints) {
+        this.discountPoints = discountPoints;
     }
 
     public String getEmail() {

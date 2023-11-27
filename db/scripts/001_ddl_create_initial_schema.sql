@@ -21,8 +21,7 @@ create table users
 (
 	id serial primary key,
 	name varchar not null,
-	increase_spend int not null,
-	total int not null,
+	discount_points int not null,
 	email varchar unique,
 	password varchar
 );
