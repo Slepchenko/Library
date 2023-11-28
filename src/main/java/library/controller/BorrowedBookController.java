@@ -12,6 +12,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 @ThreadSafe
@@ -76,6 +79,14 @@ public class BorrowedBookController {
             model.addAttribute("message", e.getMessage());
             return "errors/404";
         }
+    }
+
+    @GetMapping("/personalAccountPage")
+    public String personalAccount(Model model, HttpSession session) {
+        checkInMenu(model, session);
+        model.addAttribute("borrowedBooks", borrowedBookService.findAll());
+        model.addAttribute("books", bookService.findAll());
+        return "borrowedBooks/personalAccount";
     }
 
     private void checkInMenu(Model model, HttpSession session) {

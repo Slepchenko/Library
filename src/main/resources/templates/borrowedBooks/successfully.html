@@ -24,7 +24,6 @@
         <div class="container-fluid p-0">
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
                 <header th:insert="blocks/header :: header"></header>
-                <header th:insert="blocks/header :: header"></header>
                 <div class="d-flex" th:if="${user.name == 'Гость'}">
                     <a class="nav-link text-secondary me-3" th:href="@{/users/register}">Регистрация</a>
                     <a class="nav-link text-secondary" th:href="@{/users/login}">Войти</a>
