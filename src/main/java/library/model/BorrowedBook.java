@@ -1,5 +1,6 @@
 package library.model;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Objects;
 
@@ -11,9 +12,9 @@ public class BorrowedBook {
             "user_id", "userId",
             "deposit", "deposit",
             "rental", "rental",
-            "term", "term"
-//            "borrow_date", "borrowDate",
-//            "refund_date", "refundDate"
+            "term", "term",
+            "borrow_date", "borrowDate",
+            "refund_date", "RefundDate"
     );
 
     private int id;
@@ -28,15 +29,14 @@ public class BorrowedBook {
 
     private int term;
 
-//    private LocalDateTime borrowDate;
-//
-//    private LocalDateTime refundDate;
+    private LocalDateTime borrowDate = LocalDateTime.now();
+
+    private LocalDateTime refundDate;
 
 
     public BorrowedBook() {
     }
 
-    //    public BorrowedBook(int id, int bookId, int userId, LocalDateTime borrowDate, LocalDateTime refundDate) {
     public BorrowedBook(int id, int bookId, int userId, int deposit, int rental, int term) {
         this.id = id;
         this.bookId = bookId;
@@ -44,8 +44,6 @@ public class BorrowedBook {
         this.deposit = deposit;
         this.rental = rental;
         this.term = term;
-//        this.borrowDate = borrowDate;
-//        this.refundDate = refundDate;
     }
 
     public int getId() {
@@ -64,21 +62,21 @@ public class BorrowedBook {
         this.bookId = bookId;
     }
 
-    //    public LocalDateTime getBorrowDate() {
-//        return borrowDate;
-//    }
-//
-//    public void setBorrowDate(LocalDateTime borrowDate) {
-//        this.borrowDate = borrowDate;
-//    }
-//
-//    public LocalDateTime getRefundDate() {
-//        return refundDate;
-//    }
-//
-//    public void setRefundDate(LocalDateTime refundDate) {
-//        this.refundDate = refundDate;
-//    }
+    public LocalDateTime getBorrowDate() {
+        return borrowDate;
+    }
+
+    public void setBorrowDate(LocalDateTime borrowDate) {
+        this.borrowDate = borrowDate;
+    }
+
+    public LocalDateTime getRefundDate() {
+        return refundDate;
+    }
+
+    public void setRefundDate(LocalDateTime refundDate) {
+        this.refundDate = refundDate;
+    }
 
     public int getUserId() {
         return userId;

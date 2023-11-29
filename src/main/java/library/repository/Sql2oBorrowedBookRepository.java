@@ -42,17 +42,20 @@ public class Sql2oBorrowedBookRepository implements BorrowedBookRepository {
     public Optional<BorrowedBook> save(BorrowedBook borrowedBook) {
         try (var connection = sql2o.open()) {
             String sql = """
-                      INSERT INTO borrowed_books(book_id, user_id, deposit, rental, term)
-                      VALUES (:bookId, :userId, :deposit, :rental, :term)
+                      INSERT INTO borrowed_books(book_id, user_id, deposit, rental, term, borrow_date, refund_date)
+                      VALUES (:bookId, :userId, :deposit, :rental, :term, :borrowDate, :refundDate)
                       """;
             Query query = connection.createQuery(sql, true)
                     .addParameter("bookId", borrowedBook.getBookId())
                     .addParameter("userId", borrowedBook.getUserId())
                     .addParameter("deposit", borrowedBook.getDeposit())
                     .addParameter("rental", borrowedBook.getRental())
-                    .addParameter("term", borrowedBook.getTerm());
+                    .addParameter("term", borrowedBook.getTerm())
+                    .addParameter("borrowDate", borrowedBook.getBorrowDate())
+                    .addParameter("refundDate", borrowedBook.getBorrowDate().plusMonths(borrowedBook.getTerm()));
             int generatedId = query.executeUpdate().getKey(Integer.class);
             borrowedBook.setId(generatedId);
+            borrowedBook.setRefundDate(borrowedBook.getBorrowDate().plusMonths(borrowedBook.getTerm()));
             return Optional.of(borrowedBook);
         }
     }

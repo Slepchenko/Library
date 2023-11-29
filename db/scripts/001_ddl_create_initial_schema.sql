@@ -33,7 +33,9 @@ create table borrowed_books
 	user_id int references users (id) not null,
 	deposit int not null,
     rental int not null,
-    term int not null
+    term int not null,
+	borrow_date timestamp not null,
+	refund_date timestamp not null
 );
 
 insert into files(name, path) values('book1', '/book1.webp');
