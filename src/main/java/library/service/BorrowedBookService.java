@@ -14,4 +14,6 @@ public interface BorrowedBookService {
 
     Optional<BorrowedBook> save(BorrowedBook borrowedBook);
 
+    boolean deleteById(int id);
+
 }

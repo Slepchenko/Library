@@ -12,9 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 
 @ThreadSafe
@@ -52,41 +49,56 @@ public class BorrowedBookController {
     @PostMapping("/execution")
     public String execution(Model model, @ModelAttribute BorrowedBook borrowedBook, HttpSession session) {
         checkInMenu(model, session);
-        String reference = "/borrowedBooks/pay";
         saveBorrowedBook = borrowedBook;
         Book book = bookService.findById(borrowedBook.getBookId()).get();
         discountRental = FinallyPrice.getFinallyPrice(saveBorrowedBook.getTerm(), book.getRentalPrice());
+        if (borrowedBook.getDeposit() > book.getDepositPrice()) {
+            model.addAttribute("message", "Сумма превосходит трубуемую, попробуйте ещё раз");
+            return "/errors/404";
+        }
+        if (borrowedBook.getDeposit() < book.getDepositPrice()) {
+            model.addAttribute("message", "Внесенной суммы недостаточно, попробуйте ещё раз");
+            return "/errors/404";
+        }
         model.addAttribute("borrowedBook", borrowedBook);
         model.addAttribute("bookMessage", book.getName());
         model.addAttribute("termMessage", borrowedBook.getTerm() + " месяц(ев)");
         model.addAttribute("depositMessage", borrowedBook.getDeposit() + " рублей");
         model.addAttribute("priceMessage", discountRental + " рублей");
         model.addAttribute("discountMessage", FinallyPrice.discount(saveBorrowedBook.getTerm()));
-        return validAmount(borrowedBook.getDeposit(), book.getDepositPrice(), model, reference);
+        return "/borrowedBooks/pay";
     }
 
     @PostMapping("/pay")
     public String save(Model model, @ModelAttribute BorrowedBook borrowedBook, HttpSession session) {
         checkInMenu(model, session);
-        String reference = "/borrowedBooks/successfully";
         saveBorrowedBook.setRental(borrowedBook.getRental());
         model.addAttribute("borrowedBook", saveBorrowedBook);
-        String result = validAmount(saveBorrowedBook.getRental(), discountRental, model, reference);
+        if (saveBorrowedBook.getRental() > discountRental) {
+            model.addAttribute("message", "Сумма превосходит трубуемую, попробуйте ещё раз");
+            return "/errors/404";
+        }
+        if (saveBorrowedBook.getRental() < discountRental) {
+            model.addAttribute("message", "Внесенной суммы недостаточно, попробуйте ещё раз");
+            return "/errors/404";
+        }
         try {
             borrowedBookService.save(saveBorrowedBook);
-            return result;
+            return "/borrowedBooks/successfully";
         } catch (Exception e) {
             model.addAttribute("message", e.getMessage());
             return "errors/404";
         }
     }
 
-    @GetMapping("/personalAccountPage")
-    public String personalAccount(Model model, HttpSession session) {
-        checkInMenu(model, session);
+    @GetMapping("/delete/{id}")
+    public String delete(Model model, @PathVariable int id) {
+        if (!borrowedBookService.deleteById(id)) {
+            model.addAttribute("message", "Книга с указанным идентификатором не найдена");
+        }
         model.addAttribute("borrowedBooks", borrowedBookService.findAll());
         model.addAttribute("books", bookService.findAll());
-        return "borrowedBooks/personalAccount";
+        return "personalAccount/personalAccount";
     }
 
     private void checkInMenu(Model model, HttpSession session) {
@@ -96,19 +108,6 @@ public class BorrowedBookController {
             user.setName("Гость");
         }
         model.addAttribute("user", user);
-    }
-
-    private String validAmount(int amount, int price, Model model, String reference) {
-        String result = reference;
-        if (Integer.compare(amount, price) == 1) {
-            model.addAttribute("message", "Сумма превосходит трубуемую, попробуйте ещё раз");
-            result = "/errors/404";
-        }
-        if (Integer.compare(amount, price) == -1) {
-            model.addAttribute("message", "Внесенной суммы недостаточно, попробуйте ещё раз");
-            result = "/errors/404";
-        }
-        return result;
     }
 
 }

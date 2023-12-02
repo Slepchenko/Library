@@ -50,7 +50,8 @@
               <tbody>
               <tr th:each="borrowedBook: ${borrowedBooks}"
                   th:if="${borrowedBook.userId} == ${user.id}">
-                <td th:each="book : ${books}" th:if="${borrowedBook.bookId == book.id}" th:text="${book.name}"></td>
+                <td> <a th:each="book : ${books}" th:if="${borrowedBook.bookId == book.id}" th:text="${book.name}"
+                        th:href="@{/librarian/{bbId}(bbId=${borrowedBook.id})}"></a></td>
                 <td th:text="${borrowedBook.deposit}"/>
                 <td th:text="${borrowedBook.borrowDate}"/>
                 <td th:text="${borrowedBook.refundDate}"/>

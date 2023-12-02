@@ -32,4 +32,8 @@ public class SimpleBorrowedBookService implements BorrowedBookService {
         return borrowedBookRepository.save(borrowedBook);
     }
 
+    @Override
+    public boolean deleteById(int id) {
+        return borrowedBookRepository.deleteById(id);
+    }
 }

@@ -1,6 +1,5 @@
 package library.repository;
 
-import library.model.Book;
 import library.model.BorrowedBook;
 
 import java.util.Collection;
@@ -13,5 +12,7 @@ public interface BorrowedBookRepository {
     Collection<BorrowedBook> findAll();
 
     Optional<BorrowedBook> save(BorrowedBook borrowedBook);
+
+    boolean deleteById(int id);
 
 }
