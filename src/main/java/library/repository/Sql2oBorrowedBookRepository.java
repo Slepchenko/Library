@@ -1,9 +1,8 @@
 package library.repository;
 
-import library.model.Book;
+import library.BookCondition;
 import library.model.BorrowedBook;
 import org.springframework.stereotype.Repository;
-import org.springframework.test.context.jdbc.Sql;
 import org.sql2o.Connection;
 import org.sql2o.Query;
 import org.sql2o.Sql2o;
@@ -42,8 +41,8 @@ public class Sql2oBorrowedBookRepository implements BorrowedBookRepository {
     public Optional<BorrowedBook> save(BorrowedBook borrowedBook) {
         try (var connection = sql2o.open()) {
             String sql = """
-                      INSERT INTO borrowed_books(book_id, user_id, deposit, rental, term, borrow_date, refund_date)
-                      VALUES (:bookId, :userId, :deposit, :rental, :term, :borrowDate, :refundDate)
+                      INSERT INTO borrowed_books(book_id, user_id, deposit, rental, term, borrow_date, refund_date, forfeit_count)
+                      VALUES (:bookId, :userId, :deposit, :rental, :term, :borrowDate, :refundDate, :forfeitCount)
                       """;
             Query query = connection.createQuery(sql, true)
                     .addParameter("bookId", borrowedBook.getBookId())
@@ -52,11 +51,29 @@ public class Sql2oBorrowedBookRepository implements BorrowedBookRepository {
                     .addParameter("rental", borrowedBook.getRental())
                     .addParameter("term", borrowedBook.getTerm())
                     .addParameter("borrowDate", borrowedBook.getBorrowDate())
-                    .addParameter("refundDate", borrowedBook.getBorrowDate().plusMonths(borrowedBook.getTerm()));
+                    .addParameter("refundDate", borrowedBook.getBorrowDate().plusMonths(borrowedBook.getTerm()))
+                    .addParameter("forfeitCount", 0);
             int generatedId = query.executeUpdate().getKey(Integer.class);
             borrowedBook.setId(generatedId);
             borrowedBook.setRefundDate(borrowedBook.getBorrowDate().plusMonths(borrowedBook.getTerm()));
             return Optional.of(borrowedBook);
+        }
+    }
+
+    @Override
+    public boolean checkBook(BorrowedBook borrowedBook) {
+        BookCondition bookCondition = new BookCondition();
+        try (var connection = sql2o.open()) {
+            String sql = """
+                      UPDATE borrowed_books SET 
+                      forfeit_count = :forfeitCount WHERE id = :id
+                      """;
+            Query query = connection.createQuery(sql, true)
+                    .addParameter("forfeitCount", borrowedBook.getForfeitCount())
+                    .addParameter("id", borrowedBook.getId());
+            int affectedRows = query.executeUpdate().getResult();
+            borrowedBook.setForfeitCount(bookCondition.forfeitCount());
+            return affectedRows > 0;
         }
     }
 

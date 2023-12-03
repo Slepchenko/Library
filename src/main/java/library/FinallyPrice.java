@@ -13,6 +13,7 @@ public class FinallyPrice {
     }
 
     private static int calculate(int months) {
+
         if (months == 3) {
             return 20;
         }

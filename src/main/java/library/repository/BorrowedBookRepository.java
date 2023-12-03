@@ -15,4 +15,6 @@ public interface BorrowedBookRepository {
 
     boolean deleteById(int id);
 
+    boolean checkBook(BorrowedBook borrowedBook);
+
 }

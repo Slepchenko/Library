@@ -1,5 +1,6 @@
 package library.controller;
 
+import library.Librarian;
 import library.model.Book;
 import library.model.BorrowedBook;
 import library.model.User;
@@ -37,15 +38,25 @@ public class librarianController {
             model.addAttribute("message", "Книга не найдена");
             return "errors/404";
         }
+        borrowedBookService.checkBook(optionalBorrowedBook.get());
         Optional<Book> optionalBook = bookService.findById(optionalBorrowedBook.get().getBookId());
         if (optionalBook.isEmpty()) {
             model.addAttribute("message", "Книга не найдена");
             return "errors/404";
         }
+        borrowedBookService.checkBook(optionalBorrowedBook.get());
+//        Optional<BorrowedBook> checkedOptionBorrowedBook = borrowedBookService.checkBook(optionalBorrowedBook.get());
         model.addAttribute("borrowedBook", optionalBorrowedBook.get());
         model.addAttribute("bookName", optionalBook.get().getName());
-        model.addAttribute("condition", "В отличном состоянии");
-        model.addAttribute("pay", "100");
+        Librarian librarian = new Librarian();
+        int forfeitCount = optionalBorrowedBook.get().getForfeitCount();
+
+        if (forfeitCount == 0) {
+            model.addAttribute("forfeitMessage", librarian.forfeitMessage(forfeitCount));
+            return "librarian/librarian";
+        }
+        model.addAttribute("forfeitMessage", librarian.forfeitMessage(forfeitCount) + " рублей");
+        model.addAttribute("forfeit", forfeitCount + " рублей");
         return "librarian/librarian";
     }
 

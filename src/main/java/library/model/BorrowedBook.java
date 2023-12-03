@@ -14,7 +14,8 @@ public class BorrowedBook {
             "rental", "rental",
             "term", "term",
             "borrow_date", "borrowDate",
-            "refund_date", "RefundDate"
+            "refund_date", "refundDate",
+            "forfeit_count", "forfeitCount"
     );
 
     private int id;
@@ -33,17 +34,20 @@ public class BorrowedBook {
 
     private LocalDateTime refundDate;
 
+    int forfeitCount;
+
 
     public BorrowedBook() {
     }
 
-    public BorrowedBook(int id, int bookId, int userId, int deposit, int rental, int term) {
+    public BorrowedBook(int id, int bookId, int userId, int deposit, int rental, int term, int forfeitCount) {
         this.id = id;
         this.bookId = bookId;
         this.userId = userId;
         this.deposit = deposit;
         this.rental = rental;
         this.term = term;
+        this.forfeitCount = forfeitCount;
     }
 
     public int getId() {
@@ -108,6 +112,14 @@ public class BorrowedBook {
 
     public void setTerm(int term) {
         this.term = term;
+    }
+
+    public int getForfeitCount() {
+        return forfeitCount;
+    }
+
+    public void setForfeitCount(int forfeitCount) {
+        this.forfeitCount = forfeitCount;
     }
 
     @Override

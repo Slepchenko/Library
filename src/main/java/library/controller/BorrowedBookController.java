@@ -53,7 +53,7 @@ public class BorrowedBookController {
         Book book = bookService.findById(borrowedBook.getBookId()).get();
         discountRental = FinallyPrice.getFinallyPrice(saveBorrowedBook.getTerm(), book.getRentalPrice());
         if (borrowedBook.getDeposit() > book.getDepositPrice()) {
-            model.addAttribute("message", "Сумма превосходит трубуемую, попробуйте ещё раз");
+            model.addAttribute("message", "Сумма превосходит требуемую, попробуйте ещё раз");
             return "/errors/404";
         }
         if (borrowedBook.getDeposit() < book.getDepositPrice()) {
@@ -75,7 +75,7 @@ public class BorrowedBookController {
         saveBorrowedBook.setRental(borrowedBook.getRental());
         model.addAttribute("borrowedBook", saveBorrowedBook);
         if (saveBorrowedBook.getRental() > discountRental) {
-            model.addAttribute("message", "Сумма превосходит трубуемую, попробуйте ещё раз");
+            model.addAttribute("message", "Сумма превосходит требуемую, попробуйте ещё раз");
             return "/errors/404";
         }
         if (saveBorrowedBook.getRental() < discountRental) {
