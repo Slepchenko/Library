@@ -44,8 +44,6 @@ public class librarianController {
             model.addAttribute("message", "Книга не найдена");
             return "errors/404";
         }
-        borrowedBookService.checkBook(optionalBorrowedBook.get());
-//        Optional<BorrowedBook> checkedOptionBorrowedBook = borrowedBookService.checkBook(optionalBorrowedBook.get());
         model.addAttribute("borrowedBook", optionalBorrowedBook.get());
         model.addAttribute("bookName", optionalBook.get().getName());
         Librarian librarian = new Librarian();

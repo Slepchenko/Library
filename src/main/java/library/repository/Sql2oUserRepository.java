@@ -50,4 +50,13 @@ public class Sql2oUserRepository implements UserRepository {
         }
     }
 
+    public String findUserNameById(int id) {
+        try (Connection connection = sql2o.open()) {
+            Query query = connection.createQuery("SELECT name FROM users WHERE id = :id")
+                    .addParameter("id", id);
+            User user = query.setColumnMappings(User.COLUMN_MAPPING).executeAndFetchFirst(User.class);
+            return user.getName();
+        }
+    }
+
 }

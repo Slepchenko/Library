@@ -10,4 +10,6 @@ public interface UserService {
 
     Optional<User> findByEmailAndPassword(String email, String password);
 
+    String findUserNameById(int id);
+
 }

@@ -1,23 +1,9 @@
 package library;
 
-import java.util.Random;
+import library.model.Book;
+import library.model.BorrowedBook;
 
 public class Librarian {
-
-//    public int forfeitCount(int forfeitCount) {
-//        Random random = new Random();
-//        int condition = random.nextInt(0, 100);
-//        if (condition >= 0 && condition <= 50) {
-//            forfeitCount = 0;
-//            return 0;
-//        }
-//        if (condition > 50 && condition < 81) {
-//            forfeitCount = 25;
-//            return 25;
-//        }
-//        forfeitCount = 50;
-//        return 50;
-//    }
 
     public String forfeitMessage(int forfeitCount) {
         return switch (forfeitCount) {
@@ -25,6 +11,20 @@ public class Librarian {
             case 25 -> "Книга имеет незначительные повреждения, за которые нужно доплатить. С вас:";
             default -> "Книга имеет серьезные повреждения которые Вам обойдутся в:";
         };
+    }
+
+    public String receipt(BorrowedBook borrowedBook, Book book, String userName) {
+        StringBuilder message = new StringBuilder();
+        message.append("Квитанция для получения книги на имя: ")
+                .append(userName)
+                .append(System.lineSeparator())
+                .append("Название книги: ").append(book.getName()).append(System.lineSeparator())
+                .append("Сроком до: ").append(borrowedBook.getRefundDate()).append(System.lineSeparator())
+                .append("Внесенный залог: ").append(borrowedBook.getDeposit()).append(" рублей").append(System.lineSeparator())
+                .append("Внесенная сумма аренды книги: ").append(borrowedBook.getRental()).append(" рублей").append(System.lineSeparator())
+                .append(System.lineSeparator()).append(System.lineSeparator())
+                .append("Библиотекарь Слепченко Александр Сергеевич ").append(borrowedBook.getBorrowDate());
+        return message.toString();
     }
 
 }

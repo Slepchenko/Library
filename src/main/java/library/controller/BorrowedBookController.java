@@ -1,17 +1,22 @@
 package library.controller;
 
 import library.FinallyPrice;
+import library.Librarian;
 import library.model.Book;
 import library.model.BorrowedBook;
 import library.model.User;
 import library.service.BookService;
 import library.service.BorrowedBookService;
+import library.service.UserService;
 import net.jcip.annotations.ThreadSafe;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.Optional;
 
 @ThreadSafe
@@ -27,9 +32,12 @@ public class BorrowedBookController {
 
     private int discountRental;
 
-    public BorrowedBookController(BookService bookService, BorrowedBookService borrowedBookService) {
+    private UserService userService;
+
+    public BorrowedBookController(BookService bookService, BorrowedBookService borrowedBookService, UserService userService) {
         this.bookService = bookService;
         this.borrowedBookService = borrowedBookService;
+        this.userService = userService;
     }
 
     @GetMapping("/{id}")
@@ -99,6 +107,28 @@ public class BorrowedBookController {
         model.addAttribute("borrowedBooks", borrowedBookService.findAll());
         model.addAttribute("books", bookService.findAll());
         return "personalAccount/personalAccount";
+    }
+
+    @GetMapping("/download/{id}")
+    public void downloadReceipt(@PathVariable int id, Model model, HttpServletResponse response) throws IOException {
+        Optional<BorrowedBook> optionalBorrowedBook = borrowedBookService.findById(id);
+        if (optionalBorrowedBook.isEmpty()) {
+            model.addAttribute("message", "Книга не найдена");
+            return;
+        }
+        BorrowedBook borrowedBook = optionalBorrowedBook.get();
+        Book book = bookService.findById(optionalBorrowedBook.get().getBookId()).get();
+        String userName = userService.findUserNameById(borrowedBook.getUserId());
+        response.setContentType("application/octet-stream");
+            String headerKey = "Content-Disposition";
+            String headerValue = "attachment; filename = " + borrowedBook.getId();
+            response.setHeader(headerKey, headerValue);
+            try (ServletOutputStream outputStream = response.getOutputStream()) {
+                Librarian librarian = new Librarian();
+                byte[] content = librarian.receipt(borrowedBook, book, userName).getBytes();
+                outputStream.write(content);
+
+            }
     }
 
     private void checkInMenu(Model model, HttpSession session) {
