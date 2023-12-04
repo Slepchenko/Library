@@ -30,30 +30,36 @@
         </nav>
         <p></p>
         <div class="container">
-        </div>
-        <div>На этой странице моделируется ситуация когда библиотекарь проверяет состояние книги.
-            Проверка производится рандомно эмулятором с простой логикой. Чем хуже состояние тем выше сумма,
-            которую нужно доплатить.
-            Книга в идеальном состоянии имеет вероятность - 50%,
-            книга в хорошем состоянии - 30%,
-            книга в плохом состоянии - 20%.
-        </div>
-        <p></p>
-        <p><b>Состояние книги:</b></p>
-        <h4 class="mb=4" th:text="${bookName}"></h4>
-        <h4 th:text="${forfeitMessage}"></h4>
-        <h2 th:text="${forfeit}"></h2>
 
-        <div class="col-6">
-            <div class="row">
-                <div class="col-3"><a class="btn btn-primary w-100"
-                                      th:href="@{/borrowedBooks/delete/{id}(id=${borrowedBook.id})}">Вернуть книгу</a></div>
-                <div class="col-3"><a class="btn btn-danger w-100" th:href="@{/personalAccount/personalAccountPage}">Отмена</a></div>
+        <div class="mb-3">
+            <div class="mb-6 row">
+                <div>На этой странице моделируется ситуация когда библиотекарь проверяет состояние книги.
+                    Проверка производится рандомно эмулятором с простой логикой. Чем хуже состояние тем выше сумма,
+                    которую нужно доплатить.
+                    Книга в идеальном состоянии имеет вероятность - 50%,
+                    книга в хорошем состоянии - 30%,
+                    книга в плохом состоянии - 20%.
+                </div>
+                <p></p>
+                <p><b>Состояние книги:</b></p>
+                <h4 class="mb=4" th:text="${bookName}"></h4>
+                <h4 th:text="${forfeitMessage}"></h4>
+                <h2 th:text="${forfeit}"></h2>
+
+                <div class="col-6">
+                    <div class="row">
+                        <div class="col-3"><a class="btn btn-primary w-100"
+                                              th:href="@{/borrowedBooks/delete/{id}(id=${borrowedBook.id})}">Вернуть
+                            книгу</a></div>
+                        <div class="col-3"><a class="btn btn-danger w-100"
+                                              th:href="@{/personalAccount/personalAccountPage}">Отмена</a></div>
+                    </div>
+                </div>
             </div>
         </div>
-
+        </div>
     </form>
-
+>
     <footer th:insert="blocks/footer :: footer"></footer>
 </div>
 </body>

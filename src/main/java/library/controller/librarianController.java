@@ -53,7 +53,7 @@ public class librarianController {
             model.addAttribute("forfeitMessage", librarian.forfeitMessage(forfeitCount));
             return "librarian/librarian";
         }
-        model.addAttribute("forfeitMessage", librarian.forfeitMessage(forfeitCount) + " рублей");
+        model.addAttribute("forfeitMessage", librarian.forfeitMessage(forfeitCount));
         model.addAttribute("forfeit", forfeitCount + " рублей");
         return "librarian/librarian";
     }

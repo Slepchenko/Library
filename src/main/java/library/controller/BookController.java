@@ -4,6 +4,7 @@ import library.model.Book;
 import library.model.BorrowedBook;
 import library.model.User;
 import library.service.BookService;
+import library.service.BorrowedBookService;
 import library.service.FileService;
 import library.service.SimpleBookService;
 import net.jcip.annotations.ThreadSafe;
@@ -27,14 +28,18 @@ public class BookController {
 
     private final FileService fileService;
 
-    public BookController(SimpleBookService bookService, FileService fileService) {
+    private final BorrowedBookService borrowedBookService;
+
+    public BookController(SimpleBookService bookService, FileService fileService, BorrowedBookService borrowedBookService) {
         this.bookService = bookService;
         this.fileService = fileService;
+        this.borrowedBookService = borrowedBookService;
     }
 
     @GetMapping
     public String getAll(Model model, HttpSession session) {
         model.addAttribute("books", bookService.findAll());
+        model.addAttribute("borrowedBooks", borrowedBookService.findAll());
         checkInMenu(model, session);
         return "books/list";
     }

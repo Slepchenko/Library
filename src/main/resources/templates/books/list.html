@@ -38,16 +38,18 @@
           <th scope="col">Жанр</th>
           <th scope="col">Залог</th>
           <th scope="col">Стоимость аренды</th>
+          <th scope="col"></th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="book: ${books}">
           <td th:text="${book.id}"/>
-          <td><a th:text="${book.name}" th:href="@{/books/{bookId}(bookId=${book.id})}"></a></td>
+          <td><a th:href="@{/books/{bookId}(bookId=${book.id})}" th:text="${book.name}" ></a></td>
           <td th:text="${book.author}"/>
           <td th:text="${book.genre}"/>
           <td th:text="${book.depositPrice}"/>
           <td th:text="${book.rentalPrice}"/>
+          <td th:each="borrowedBook : ${borrowedBooks}" th:if="${book.id == borrowedBook.bookId}" class="text-danger" >Нет в наличии</td>
         </tr>
         </tbody>
       </table>
