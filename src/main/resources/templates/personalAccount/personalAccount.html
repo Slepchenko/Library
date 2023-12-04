@@ -51,8 +51,8 @@
                     <td><a th:each="book : ${books}" th:if="${borrowedBook.bookId == book.id}" th:text="${book.name}"
                            th:href="@{/librarian/{bbId}(bbId=${borrowedBook.id})}"></a></td>
                     <td th:text="${borrowedBook.deposit}"/>
-                    <td th:text="${borrowedBook.borrowDate}"/>
-                    <td th:text="${borrowedBook.refundDate}"/>
+                    <td th:text="${#temporals.format(borrowedBook.borrowDate, 'dd.MM.yyy')}"/>
+                    <td th:text="${#temporals.format(borrowedBook.refundDate, 'dd.MM.yyy')}"/>
                 </tr>
                 </tbody>
             </table>
