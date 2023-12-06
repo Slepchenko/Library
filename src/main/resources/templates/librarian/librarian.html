@@ -11,7 +11,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"
             integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V"
             crossorigin="anonymous"></script>
-
     <title>Библиотека</title>
 </head>
 <body>
@@ -24,42 +23,41 @@
                 <a class="nav-link text-secondary" th:href="@{/users/login}">Войти</a>
             </div>
             <div class="d-flex" th:if="${user.name != 'Гость'}">
-                <a class="nav-link text-secondary me-3" href="#" th:text="${user.name}"></a>
+                <a class="nav-link text-secondary me-3" href="#" th:text="${user.name}"
+                   th:href="@{/personalAccount/personalAccountPage}"></a>
                 <a class="nav-link text-secondary" th:href="@{/users/logout}">Выйти</a>
             </div>
         </nav>
         <p></p>
         <div class="container">
-
-        <div class="mb-3">
-            <div class="mb-6 row">
-                <div>На этой странице моделируется ситуация когда библиотекарь проверяет состояние книги.
-                    Проверка производится рандомно эмулятором с простой логикой. Чем хуже состояние тем выше сумма,
-                    которую нужно доплатить.
-                    Книга в идеальном состоянии имеет вероятность - 50%,
-                    книга в хорошем состоянии - 30%,
-                    книга в плохом состоянии - 20%.
-                </div>
-                <p></p>
-                <p><b>Состояние книги:</b></p>
-                <h4 class="mb=4" th:text="${bookName}"></h4>
-                <h4 th:text="${forfeitMessage}"></h4>
-                <h2 th:text="${forfeit}"></h2>
-
-                <div class="col-6">
-                    <div class="row">
-                        <div class="col-3"><a class="btn btn-primary w-100"
-                                              th:href="@{/borrowedBooks/delete/{id}(id=${borrowedBook.id})}">Вернуть
-                            книгу</a></div>
-                        <div class="col-3"><a class="btn btn-danger w-100"
-                                              th:href="@{/personalAccount/personalAccountPage}">Отмена</a></div>
+            <div class="mb-3">
+                <div class="mb-6 row">
+                    <div>На этой странице моделируется ситуация когда библиотекарь проверяет состояние книги.
+                        Проверка производится рандомно эмулятором с простой логикой. Чем хуже состояние тем выше сумма,
+                        которую нужно доплатить.
+                        Книга в идеальном состоянии имеет вероятность - 50%,
+                        книга в хорошем состоянии - 30%,
+                        книга в плохом состоянии - 20%.
+                    </div>
+                    <br><br><br><br>
+                    <p><b>Состояние книги:</b></p>
+                    <h4 class="mb=4" th:text="${bookName}"></h4>
+                    <h4 th:text="${forfeitMessage}"></h4>
+                    <h2 th:text="${forfeit}"></h2>
+                    <br><br><br><br>
+                    <div class="col-6">
+                        <div class="row">
+                            <div class="col-3"><a class="btn btn-primary w-100"
+                                                  th:href="@{/borrowedBooks/delete/{id}(id=${borrowedBook.id})}">Вернуть
+                                книгу</a></div>
+                            <div class="col-3"><a class="btn btn-danger w-100"
+                                                  th:href="@{/personalAccount/personalAccountPage}">Отмена</a></div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        </div>
     </form>
->
     <footer th:insert="blocks/footer :: footer"></footer>
 </div>
 </body>

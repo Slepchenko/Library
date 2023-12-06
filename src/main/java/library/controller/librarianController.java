@@ -1,9 +1,9 @@
 package library.controller;
 
-import library.Librarian;
+import library.logic.AddUserModel;
+import library.logic.Librarian;
 import library.model.Book;
 import library.model.BorrowedBook;
-import library.model.User;
 import library.service.BookService;
 import library.service.BorrowedBookService;
 import net.jcip.annotations.ThreadSafe;
@@ -25,6 +25,8 @@ public class librarianController {
 
     private BookService bookService;
 
+    private static final int NO_FORFEIT = 0;
+
     public librarianController(BorrowedBookService borrowedBookService, BookService bookService) {
         this.borrowedBookService = borrowedBookService;
         this.bookService = bookService;
@@ -32,7 +34,7 @@ public class librarianController {
 
     @GetMapping({"/", "/{id}"})
     public String getLibrarianPage(Model model, @PathVariable int id, HttpSession session) {
-        checkInMenu(model, session);
+        AddUserModel.checkInMenu(model, session);
         Optional<BorrowedBook> optionalBorrowedBook = borrowedBookService.findById(id);
         if (optionalBorrowedBook.isEmpty()) {
             model.addAttribute("message", "Книга не найдена");
@@ -48,23 +50,13 @@ public class librarianController {
         model.addAttribute("bookName", optionalBook.get().getName());
         Librarian librarian = new Librarian();
         int forfeitCount = optionalBorrowedBook.get().getForfeitCount();
-
-        if (forfeitCount == 0) {
+        if (forfeitCount == NO_FORFEIT) {
             model.addAttribute("forfeitMessage", librarian.forfeitMessage(forfeitCount));
             return "librarian/librarian";
         }
         model.addAttribute("forfeitMessage", librarian.forfeitMessage(forfeitCount));
         model.addAttribute("forfeit", forfeitCount + " рублей");
         return "librarian/librarian";
-    }
-
-    private void checkInMenu(Model model, HttpSession session) {
-        User user = (User) session.getAttribute("user");
-        if (user == null) {
-            user = new User();
-            user.setName("Гость");
-        }
-        model.addAttribute("user", user);
     }
 
 }

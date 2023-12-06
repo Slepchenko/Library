@@ -21,7 +21,6 @@ create table users
 (
 	id serial primary key,
 	name varchar not null,
-	discount_points int not null,
 	email varchar unique,
 	password varchar
 );
@@ -35,7 +34,8 @@ create table borrowed_books
     rental int not null,
     term int not null,
 	borrow_date timestamp not null,
-	refund_date timestamp not null
+	refund_date timestamp not null,
+	forfeit_count int not null
 );
 
 insert into files(name, path) values('book1', '/book1.webp');
@@ -47,7 +47,6 @@ insert into files(name, path) values('book6', '/book6.webp');
 insert into files(name, path) values('book7', '/book7.webp');
 insert into files(name, path) values('book8', '/book8.webp');
 insert into files(name, path) values('book9', '/book9.webp');
-
 
 insert into books (name, author, deposit_price, rental_price, genre, file_id, description) values ('Древности российского государства', 'Федор Солнцев', 500, 100, 'Альбом', 1, 'Книга является альбомом, состоящим из 500 листов хромолитографий. Они изображают старинные доспехи, иконы, одежду и украшения, предметы быта и отличаются фотографической четкостью. Также в издание включены несколько тетрадей с текстовым материалом. Стоимость альбома оценивается в 750 000 долларов США. ');
 insert into books (name, author, deposit_price, rental_price, genre, file_id, description) values ('Одно лето в аду', 'Артюр Рембо', 450, 100, 'Стихотворения и прозы', 2, 'Книга стихотворений в прозе французского поэта XIX века Артюра Рембо. Единственная книга Рембо, опубликованная самим автором. Написана в ответ на книгу другого поэта Верлена «Романсы без слов». Практически весь тираж первого издания, за исключением разосланных друзьям и знакомым книг, остался лежать не выкупленным на складе. Теперь «Одно лето в аду» признается одной из наиболее значительных поэтических работ, оказавшей сильное влияние на движение символистов и сюрреалистов, а также на поэтов и исполнителей XX и XXI века. ');

@@ -32,8 +32,8 @@ public class UserController {
 
     @PostMapping("/register")
     public String register(Model model, @ModelAttribute User user) {
-        Optional<User> savedUser = userService.save(user);
-        if (savedUser.isEmpty()) {
+        Optional<User> optionalUser = userService.save(user);
+        if (optionalUser.isEmpty()) {
             model.addAttribute("message", "Пользователь с такой почтой уже существует");
             return "errors/404";
         }
@@ -47,13 +47,13 @@ public class UserController {
 
     @PostMapping("/login")
     public String loginUser(@ModelAttribute User user, Model model, HttpServletRequest request) {
-        Optional<User> userOptional = userService.findByEmailAndPassword(user.getEmail(), user.getPassword());
-        if (userOptional.isEmpty()) {
+        Optional<User> optionalUser = userService.findByEmailAndPassword(user.getEmail(), user.getPassword());
+        if (optionalUser.isEmpty()) {
             model.addAttribute("error", "Почта или пароль введены неверно");
             return "/users/login";
         }
         HttpSession session = request.getSession();
-        session.setAttribute("user", userOptional.get());
+        session.setAttribute("user", optionalUser.get());
         return "redirect:/index";
     }
 

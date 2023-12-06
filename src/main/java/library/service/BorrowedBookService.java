@@ -18,4 +18,6 @@ public interface BorrowedBookService {
 
     boolean checkBook(BorrowedBook borrowedBook);
 
+    Optional<BorrowedBook> findByBookId(int bookId);
+
 }

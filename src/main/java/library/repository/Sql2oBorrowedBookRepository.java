@@ -1,6 +1,6 @@
 package library.repository;
 
-import library.BookCondition;
+import library.logic.BookCondition;
 import library.model.BorrowedBook;
 import org.springframework.stereotype.Repository;
 import org.sql2o.Connection;
@@ -24,7 +24,8 @@ public class Sql2oBorrowedBookRepository implements BorrowedBookRepository {
         try (Connection connection = sql2o.open()) {
             Query query = connection.createQuery("SELECT * FROM borrowed_books WHERE id = :id");
             query = query.addParameter("id", id);
-            BorrowedBook borrowedBook = query.setColumnMappings(BorrowedBook.COLUMN_MAPPING).executeAndFetchFirst(BorrowedBook.class);
+            BorrowedBook borrowedBook =
+                    query.setColumnMappings(BorrowedBook.COLUMN_MAPPING).executeAndFetchFirst(BorrowedBook.class);
             return Optional.ofNullable(borrowedBook);
         }
     }
@@ -38,10 +39,24 @@ public class Sql2oBorrowedBookRepository implements BorrowedBookRepository {
     }
 
     @Override
+    public Optional<BorrowedBook> findByBookId(int bookId) {
+        try (Connection connection = sql2o.open()) {
+            Query query = connection.createQuery("SELECT * FROM borrowed_books WHERE book_id = :bookId");
+            query = query.addParameter("bookId", bookId);
+            BorrowedBook borrowedBook =
+                    query.setColumnMappings(BorrowedBook.COLUMN_MAPPING).executeAndFetchFirst(BorrowedBook.class);
+            return Optional.ofNullable(borrowedBook);
+        }
+    }
+
+    @Override
     public Optional<BorrowedBook> save(BorrowedBook borrowedBook) {
         try (var connection = sql2o.open()) {
             String sql = """
-                      INSERT INTO borrowed_books(book_id, user_id, deposit, rental, term, borrow_date, refund_date, forfeit_count)
+                      INSERT INTO borrowed_books
+                      (
+                      book_id, user_id, deposit, rental, term, borrow_date, refund_date, forfeit_count
+                      )
                       VALUES (:bookId, :userId, :deposit, :rental, :term, :borrowDate, :refundDate, :forfeitCount)
                       """;
             Query query = connection.createQuery(sql, true)

@@ -21,12 +21,11 @@ public class Sql2oUserRepository implements UserRepository {
     public Optional<User> save(User user) {
         try (var connection = sql2o.open()) {
             String sql = """
-                    INSERT INTO users(name, discount_points, email, password)
-                    VALUES (:name, :discountPoints, :email, :password)
+                    INSERT INTO users(name, email, password)
+                    VALUES (:name, :email, :password)
                     """;
             Query query = connection.createQuery(sql, true)
                     .addParameter("name", user.getName())
-                    .addParameter("discountPoints", user.getDiscountPoints())
                     .addParameter("email", user.getEmail())
                     .addParameter("password", user.getPassword());
             int generatedId = query.executeUpdate().getKey(Integer.class);
@@ -42,7 +41,8 @@ public class Sql2oUserRepository implements UserRepository {
     @Override
     public Optional<User> findByEmailAndPassword(String email, String password) {
         try (Connection connection = sql2o.open()) {
-            Query query = connection.createQuery("SELECT * FROM users WHERE email = :email and password = :password")
+            Query query = connection.createQuery(
+                    "SELECT * FROM users WHERE email = :email and password = :password")
                     .addParameter("email", email)
                     .addParameter("password", password);
             User user = query.setColumnMappings(User.COLUMN_MAPPING).executeAndFetchFirst(User.class);

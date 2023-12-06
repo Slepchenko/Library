@@ -36,7 +36,6 @@ public class BorrowedBook {
 
     int forfeitCount;
 
-
     public BorrowedBook() {
     }
 

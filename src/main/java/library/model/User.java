@@ -10,14 +10,13 @@ public class User {
             "name", "name",
             "discount_points", "discountPoints",
             "email", "email",
-            "password", "password"
+            "password", "password",
+            "total_account", "totalAccount"
     );
 
     private int id;
 
     private String name;
-
-    private int discountPoints;
 
     private String email;
 
@@ -26,10 +25,9 @@ public class User {
     public User() {
     }
 
-    public User(int id, String name, int discountPoints, String email, String password) {
+    public User(int id, String name, String email, String password) {
         this.id = id;
         this.name = name;
-        this.discountPoints = discountPoints;
         this.email = email;
         this.password = password;
     }
@@ -48,14 +46,6 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public int getDiscountPoints() {
-        return discountPoints;
-    }
-
-    public void setDiscountPoints(int discountPoints) {
-        this.discountPoints = discountPoints;
     }
 
     public String getEmail() {

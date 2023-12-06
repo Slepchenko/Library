@@ -41,4 +41,10 @@ public class SimpleBorrowedBookService implements BorrowedBookService {
     public boolean checkBook(BorrowedBook borrowedBook) {
         return borrowedBookRepository.checkBook(borrowedBook);
     }
+
+    @Override
+    public Optional<BorrowedBook> findByBookId(int bookId) {
+        return borrowedBookRepository.findByBookId(bookId);
+    }
+
 }

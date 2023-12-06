@@ -17,4 +17,6 @@ public interface BorrowedBookRepository {
 
     boolean checkBook(BorrowedBook borrowedBook);
 
+    Optional<BorrowedBook> findByBookId(int bookId);
+
 }

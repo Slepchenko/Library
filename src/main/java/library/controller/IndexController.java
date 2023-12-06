@@ -1,6 +1,6 @@
 package library.controller;
 
-import library.model.User;
+import library.logic.AddUserModel;
 import net.jcip.annotations.ThreadSafe;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,17 +14,8 @@ public class IndexController {
 
     @GetMapping({"/", "/index"})
     public String getIndex(Model model, HttpSession session) {
-        checkInMenu(model, session);
+        AddUserModel.checkInMenu(model, session);
         return "index";
-    }
-
-    private void checkInMenu(Model model, HttpSession session) {
-        User user = (User) session.getAttribute("user");
-        if (user == null) {
-            user = new User();
-            user.setName("Гость");
-        }
-        model.addAttribute("user", user);
     }
 
 }
