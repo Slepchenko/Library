@@ -19,7 +19,7 @@ import java.util.Optional;
 @ThreadSafe
 @Controller
 @RequestMapping("/librarian")
-public class librarianController {
+public class LibrarianController {
 
     private BorrowedBookService borrowedBookService;
 
@@ -27,7 +27,7 @@ public class librarianController {
 
     private static final int NO_FORFEIT = 0;
 
-    public librarianController(BorrowedBookService borrowedBookService, BookService bookService) {
+    public LibrarianController(BorrowedBookService borrowedBookService, BookService bookService) {
         this.borrowedBookService = borrowedBookService;
         this.bookService = bookService;
     }

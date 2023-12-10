@@ -28,7 +28,7 @@ public class SimpleBorrowedBookService implements BorrowedBookService {
     }
 
     @Override
-    public Optional<BorrowedBook> save(BorrowedBook borrowedBook) {
+    public BorrowedBook save(BorrowedBook borrowedBook) {
         return borrowedBookRepository.save(borrowedBook);
     }
 

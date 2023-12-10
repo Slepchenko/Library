@@ -46,10 +46,11 @@
             </div>
             <br><br><br><br>
             <div class="mb-3">
-                <div class="col-6">
-                    <p>Чем больше срок аренды, тем больше скидка!
-                       1-3 месяца, нет скидки. 3-4 месяца скидка 25 рублей. 4-6 месяцев, скидка 50 рублей!!!</p>
-                    <label for="term"><b>Выберите количество месяцев</b></label>
+                <div class="col-7">
+                    <p>Чем больше срок аренды, тем больше скидка!</p>
+                    <p>Скидка начинает действовать если вы берёте книгу на срок от 3-х до 4-х месяцев - 20%.</P>
+                    <p>Если берёте книгу на срок от 5-х - 40%!!!</p>
+                    <label for="term"><b>Выберите количество месяцев:</b></label>
                     <select class="form-control" id="term" name="term" style="max-width:10%">
                         <option th:each="month : ${monthNum}" th:value="${month}" th:text="${month}"></option>
                     </select>

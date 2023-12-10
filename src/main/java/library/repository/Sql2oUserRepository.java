@@ -6,6 +6,7 @@ import org.sql2o.Connection;
 import org.sql2o.Query;
 import org.sql2o.Sql2o;
 
+import java.util.Collection;
 import java.util.Optional;
 
 @Repository
@@ -58,5 +59,23 @@ public class Sql2oUserRepository implements UserRepository {
             return user.getName();
         }
     }
+
+    public boolean delete(String email, String password) {
+        try (Connection connection = sql2o.open()) {
+            Query query = connection.createQuery("DELETE FROM users WHERE email = :email and password = :password")
+                    .addParameter("email", email)
+                    .addParameter("password", password);
+            int affectedRows = query.executeUpdate().getResult();
+            return affectedRows > 0;
+        }
+    }
+
+    public Collection<User> findAll() {
+        try (Connection connection = sql2o.open()) {
+            Query query = connection.createQuery("SELECT * FROM users");
+            return query.setColumnMappings(User.COLUMN_MAPPING).executeAndFetch(User.class);
+        }
+    }
+
 
 }

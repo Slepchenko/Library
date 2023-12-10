@@ -1,6 +1,7 @@
 package library.repository;
 
 import library.logic.BookCondition;
+import library.model.Book;
 import library.model.BorrowedBook;
 import org.springframework.stereotype.Repository;
 import org.sql2o.Connection;
@@ -50,7 +51,7 @@ public class Sql2oBorrowedBookRepository implements BorrowedBookRepository {
     }
 
     @Override
-    public Optional<BorrowedBook> save(BorrowedBook borrowedBook) {
+    public BorrowedBook save(BorrowedBook borrowedBook) {
         try (var connection = sql2o.open()) {
             String sql = """
                       INSERT INTO borrowed_books
@@ -71,7 +72,7 @@ public class Sql2oBorrowedBookRepository implements BorrowedBookRepository {
             int generatedId = query.executeUpdate().getKey(Integer.class);
             borrowedBook.setId(generatedId);
             borrowedBook.setRefundDate(borrowedBook.getBorrowDate().plusMonths(borrowedBook.getTerm()));
-            return Optional.of(borrowedBook);
+            return borrowedBook;
         }
     }
 

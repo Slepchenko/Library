@@ -1,5 +1,6 @@
 package library.repository;
 
+import library.model.BorrowedBook;
 import org.springframework.stereotype.Repository;
 import org.sql2o.Connection;
 import org.sql2o.Query;
@@ -33,6 +34,34 @@ public class Sql2oBookRepository implements BookRepository {
         try (Connection connection = sql2o.open()) {
             Query query = connection.createQuery("SELECT * FROM books");
             return query.setColumnMappings(Book.COLUMN_MAPPING).executeAndFetch(Book.class);
+        }
+    }
+
+    public boolean deleteById(int id) {
+        try (Connection connection = sql2o.open()) {
+            Query query = connection.createQuery("DELETE FROM books WHERE id = :id");
+            int affectedRows = query.addParameter("id", id).executeUpdate().getResult();
+            return affectedRows > 0;
+        }
+    }
+
+    public Book save(Book book) {
+        try (Connection connection = sql2o.open()) {
+            String sql = """
+                      INSERT INTO books(name, author, deposit_price, rental_price, genre, file_id, description)
+                      VALUES (:name, :author, :depositPrice, :rentalPrice, :genre, :fileId, :description)
+                      """;
+            Query query = connection.createQuery(sql, true)
+                    .addParameter("name", book.getName())
+                    .addParameter("author", book.getAuthor())
+                    .addParameter("depositPrice", book.getDepositPrice())
+                    .addParameter("rentalPrice", book.getRentalPrice())
+                    .addParameter("genre", book.getGenre())
+                    .addParameter("fileId", book.getFileId())
+                    .addParameter("description", book.getDescription());
+            int generatedId = query.executeUpdate().getKey(Integer.class);
+            book.setId(generatedId);
+            return book;
         }
     }
 

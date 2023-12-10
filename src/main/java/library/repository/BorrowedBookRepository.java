@@ -11,7 +11,7 @@ public interface BorrowedBookRepository {
 
     Collection<BorrowedBook> findAll();
 
-    Optional<BorrowedBook> save(BorrowedBook borrowedBook);
+    BorrowedBook save(BorrowedBook borrowedBook);
 
     boolean deleteById(int id);
 
