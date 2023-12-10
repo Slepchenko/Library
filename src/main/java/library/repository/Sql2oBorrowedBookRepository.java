@@ -1,7 +1,6 @@
 package library.repository;
 
 import library.logic.BookCondition;
-import library.model.Book;
 import library.model.BorrowedBook;
 import org.springframework.stereotype.Repository;
 import org.sql2o.Connection;

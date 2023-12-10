@@ -1,11 +1,10 @@
 package library.repository;
 
-import library.model.BorrowedBook;
+import library.model.Book;
 import org.springframework.stereotype.Repository;
 import org.sql2o.Connection;
 import org.sql2o.Query;
 import org.sql2o.Sql2o;
-import library.model.Book;
 
 import java.util.Collection;
 import java.util.Optional;

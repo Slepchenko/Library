@@ -1,7 +1,6 @@
 package library.repository;
 
 import library.model.File;
-import library.model.User;
 import org.springframework.stereotype.Repository;
 import org.sql2o.Connection;
 import org.sql2o.Query;
