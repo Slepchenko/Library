@@ -13,13 +13,10 @@ import org.sql2o.Sql2o;
 
 import javax.sql.DataSource;
 import java.io.InputStream;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.Collection;
 import java.util.List;
 import java.util.Properties;
 
-import static java.time.LocalDateTime.now;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 class Sql2oBorrowedBookRepositoryTest {
