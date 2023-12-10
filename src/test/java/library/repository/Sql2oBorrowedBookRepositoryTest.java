@@ -17,6 +17,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Properties;
 
+import static java.util.Collections.emptyList;
+import static java.util.Optional.empty;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 class Sql2oBorrowedBookRepositoryTest {
@@ -64,11 +66,8 @@ class Sql2oBorrowedBookRepositoryTest {
     public static void delete() {
         sql2oUserRepository.delete(user.getEmail(), user.getPassword());
         sql2oBookRepository.deleteById(book.getId());
-        Collection<File> files = sql2oFileRepository.findAll();
-        for (File f : files) {
-            System.err.println("it was worked??? A, blya");
-            sql2oFileRepository.deleteById(f.getId());
-        }
+        sql2oFileRepository.deleteById(file.getId());
+
     }
 
     @AfterEach
@@ -88,13 +87,16 @@ class Sql2oBorrowedBookRepositoryTest {
     }
 
     @Test
-    public void whenFindAllThenTrue() {
-        User user1 = new User(0, "Ivan", "ivan@mail.ru", "password");
-        User user2 = new User(0, "Alexander", "asslepchenko@bk.ru", "12345");
-        sql2oUserRepository.save(user1);
-        sql2oUserRepository.save(user2);
-        Collection<User> foundUsers = sql2oUserRepository.findAll();
-        assertThat(foundUsers).isEqualTo(List.of(user1, user2));
+    public void whenSaveThenGetSame() {
+        BorrowedBook borrowedBook = new BorrowedBook(0, book.getId(), user.getId(), book.getDepositPrice(), book.getRentalPrice(), 1, 0);
+        BorrowedBook savedBorrowedBook = sql2oBorrowedBookRepository.save(borrowedBook);
+        assertThat(savedBorrowedBook).usingRecursiveComparison().isEqualTo(borrowedBook);
+    }
+
+    @Test
+    public void whenDontSaveThenNothingFound() {
+        assertThat(sql2oBorrowedBookRepository.findAll()).isEqualTo(emptyList());
+        assertThat(sql2oBorrowedBookRepository.findById(1)).isEqualTo(empty());
     }
 
 }
