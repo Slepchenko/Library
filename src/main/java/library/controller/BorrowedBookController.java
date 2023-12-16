@@ -30,13 +30,12 @@ public class BorrowedBookController {
 
     private BorrowedBook saveBorrowedBook;
 
-    private int discountRental;
-
     private final UserService userService;
 
-    private final static int[] MONTHS_NUMBER = new int[]{1, 2, 3, 4, 5, 6};
+    private final static int[] DAYS_NUMBER = new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
 
-    public BorrowedBookController(BookService bookService, BorrowedBookService borrowedBookService, UserService userService) {
+    public BorrowedBookController(
+            BookService bookService, BorrowedBookService borrowedBookService, UserService userService) {
         this.bookService = bookService;
         this.borrowedBookService = borrowedBookService;
         this.userService = userService;
@@ -52,7 +51,7 @@ public class BorrowedBookController {
         }
         model.addAttribute("deposit",  optionalBook.get().getDepositPrice() + " рублей");
         model.addAttribute("book", optionalBook.get());
-        model.addAttribute("monthNum", MONTHS_NUMBER);
+        model.addAttribute("daysNumber", DAYS_NUMBER);
         return "borrowedBooks/create";
     }
 
@@ -65,19 +64,12 @@ public class BorrowedBookController {
             model.addAttribute("message", "Книга не найдена");
             return "errors/404";
         }
-        discountRental = FinallyPrice.getFinallyPrice(saveBorrowedBook.getTerm(), optionalBook.get().getRentalPrice());
-        if (borrowedBook.getDeposit() > optionalBook.get().getDepositPrice()) {
-            model.addAttribute("message", "Сумма превосходит требуемую, попробуйте ещё раз");
-            return "/errors/404";
-        }
-        if (borrowedBook.getDeposit() < optionalBook.get().getDepositPrice()) {
-            model.addAttribute("message", "Внесенной суммы недостаточно, попробуйте ещё раз");
-            return "/errors/404";
-        }
-        model.addAttribute("borrowedBook", borrowedBook);
+        Book book = optionalBook.get();
+        int discountRental = FinallyPrice.getFinallyPrice(saveBorrowedBook.getTerm(), book.getDepositPrice(),
+                book.getRentalPrice(), saveBorrowedBook.getStudent());
+        model.addAttribute("borrowedBook", saveBorrowedBook);
         model.addAttribute("bookMessage", optionalBook.get().getName());
-        model.addAttribute("termMessage", borrowedBook.getTerm() + " месяц(ев)");
-        model.addAttribute("depositMessage", borrowedBook.getDeposit() + " рублей");
+        model.addAttribute("termMessage", borrowedBook.getTerm() + " дней");
         model.addAttribute("priceMessage", discountRental + " рублей");
         model.addAttribute("discountMessage", FinallyPrice.discount(saveBorrowedBook.getTerm()));
         return "/borrowedBooks/pay";
@@ -86,13 +78,23 @@ public class BorrowedBookController {
     @PostMapping("/pay")
     public String save(Model model, @ModelAttribute BorrowedBook borrowedBook, HttpSession session) {
         AddUserModel.checkInMenu(model, session);
-        saveBorrowedBook.setRental(borrowedBook.getRental());
+        saveBorrowedBook.setTotal(borrowedBook.getTotal());
+        saveBorrowedBook.setInstitution(borrowedBook.getInstitution());
+        Optional<Book> optionalBook = bookService.findById(saveBorrowedBook.getBookId());
+        if (optionalBook.isEmpty()) {
+            model.addAttribute("message", "Книга не найдена");
+            return "errors/404";
+        }
         model.addAttribute("borrowedBook", saveBorrowedBook);
-        if (saveBorrowedBook.getRental() > discountRental) {
+        Book book = optionalBook.get();
+        int discountRental = FinallyPrice.getFinallyPrice(
+                saveBorrowedBook.getTerm(), book.getDepositPrice(), book.getRentalPrice(), saveBorrowedBook.getStudent()
+        );
+        if (saveBorrowedBook.getTotal() > discountRental) {
             model.addAttribute("message", "Сумма превосходит требуемую, попробуйте ещё раз");
             return "/errors/404";
         }
-        if (saveBorrowedBook.getRental() < discountRental) {
+        if (saveBorrowedBook.getTotal() < discountRental) {
             model.addAttribute("message", "Внесенной суммы недостаточно, попробуйте ещё раз");
             return "/errors/404";
         }
@@ -113,7 +115,8 @@ public class BorrowedBookController {
             model.addAttribute("message", "Книга не найдена");
             return "errors/404";
         }
-        int deposit = optionalBorrowedBook.get().getDeposit();
+        Optional<Book> optionalBook = bookService.findById(optionalBorrowedBook.get().getBookId());
+        int deposit = optionalBook.get().getDepositPrice();
         if (!borrowedBookService.deleteById(id)) {
             model.addAttribute("message", "Книга с указанным идентификатором не найдена");
         }
@@ -144,8 +147,7 @@ public class BorrowedBookController {
         String headerValue = "attachment; filename = " + borrowedBook.getId();
         response.setHeader(headerKey, headerValue);
         try (ServletOutputStream outputStream = response.getOutputStream()) {
-            Librarian librarian = new Librarian();
-            byte[] content = librarian.receipt(borrowedBook, book, userName).getBytes();
+            byte[] content = Librarian.receipt(borrowedBook, book, userName).getBytes();
             outputStream.write(content);
         }
     }

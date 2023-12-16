@@ -21,21 +21,24 @@ create table users
 (
 	id serial primary key,
 	name varchar not null,
-	email varchar unique,
-	password varchar
+	email varchar unique not null,
+	password varchar not null
 );
+
 
 create table borrowed_books
 (
 	id serial primary key,
-	book_id int references books (id) not null,
+	book_id int unique references books (id) not null,
 	user_id int references users (id) not null,
-	deposit int not null,
-    rental int not null,
+	total int not null,
     term int not null,
 	borrow_date timestamp not null,
 	refund_date timestamp not null,
-	forfeit_count int not null
+	forfeit_count int not null,
+	institution varchar,
+	student boolean not null
+
 );
 
 insert into files(name, path) values('book1', '/book1.webp');

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -30,11 +30,11 @@
         </nav>
         <p></p>
         <div class="container">
-            <img th:src="@{${file}}" align="left" width="300" alt="No image"></img><br>
+            <img th:src="@{${file}}" align="left" width="300" alt="No image" src=""><br>
             <h1 th:text="${book.name}"><br></h1><br>
             <b>Автор</b>
             <p th:text="${book.author}"><br>
-            <p></p></p>
+            <p></p>
             <b>Жанр</b>
             <p th:text="${book.genre}"><br></p><br>
             <b>Описание:</b>

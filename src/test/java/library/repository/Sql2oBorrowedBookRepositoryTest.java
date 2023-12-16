@@ -1,6 +1,7 @@
 package library.repository;
 
 import library.configuration.DatasourceConfiguration;
+import library.logic.FinallyPrice;
 import library.model.Book;
 import library.model.BorrowedBook;
 import library.model.File;
@@ -14,7 +15,6 @@ import org.sql2o.Sql2o;
 import javax.sql.DataSource;
 import java.io.InputStream;
 import java.util.Collection;
-import java.util.List;
 import java.util.Properties;
 
 import static java.util.Collections.emptyList;
@@ -80,7 +80,7 @@ class Sql2oBorrowedBookRepositoryTest {
 
     @Test
     public void whenFindByIdThenTrue() {
-        BorrowedBook borrowedBook = new BorrowedBook(0, book.getId(), user.getId(), book.getDepositPrice(), book.getRentalPrice(), 1, 0);
+        BorrowedBook borrowedBook = new BorrowedBook(0, book.getId(), user.getId(), book.getRentalPrice() + book.getDepositPrice(), 1, 0, "test", false);
         BorrowedBook saveBorrowedBook = sql2oBorrowedBookRepository.save(borrowedBook);
         BorrowedBook foundBorrowedBook = sql2oBorrowedBookRepository.findById(borrowedBook.getId()).get();
         assertThat(foundBorrowedBook).usingDefaultComparator().isEqualTo(saveBorrowedBook);
@@ -88,7 +88,7 @@ class Sql2oBorrowedBookRepositoryTest {
 
     @Test
     public void whenSaveThenGetSame() {
-        BorrowedBook borrowedBook = new BorrowedBook(0, book.getId(), user.getId(), book.getDepositPrice(), book.getRentalPrice(), 1, 0);
+        BorrowedBook borrowedBook = new BorrowedBook(0, book.getId(), user.getId(), book.getRentalPrice() + book.getDepositPrice(), 1, 0, "test", false);
         BorrowedBook savedBorrowedBook = sql2oBorrowedBookRepository.save(borrowedBook);
         assertThat(savedBorrowedBook).usingRecursiveComparison().isEqualTo(borrowedBook);
     }

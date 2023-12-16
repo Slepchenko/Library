@@ -8,10 +8,8 @@ public class User {
     public static final Map<String, String> COLUMN_MAPPING = Map.of(
             "id", "id",
             "name", "name",
-            "discount_points", "discountPoints",
             "email", "email",
-            "password", "password",
-            "total_account", "totalAccount"
+            "password", "password"
     );
 
     private int id;

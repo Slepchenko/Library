@@ -10,12 +10,13 @@ public class BorrowedBook {
             "id", "id",
             "book_id", "bookId",
             "user_id", "userId",
-            "deposit", "deposit",
-            "rental", "rental",
+            "total", "total",
             "term", "term",
             "borrow_date", "borrowDate",
             "refund_date", "refundDate",
-            "forfeit_count", "forfeitCount"
+            "forfeit_count", "forfeitCount",
+            "institution", "institution",
+            "student", "student"
     );
 
     private int id;
@@ -24,9 +25,7 @@ public class BorrowedBook {
 
     private int userId;
 
-    private int deposit;
-
-    private int rental;
+    private int total;
 
     private int term;
 
@@ -34,19 +33,24 @@ public class BorrowedBook {
 
     private LocalDateTime refundDate;
 
-    int forfeitCount;
+    private int forfeitCount;
+
+    private String institution;
+
+    private boolean student;
 
     public BorrowedBook() {
     }
 
-    public BorrowedBook(int id, int bookId, int userId, int deposit, int rental, int term, int forfeitCount) {
+    public BorrowedBook(int id, int bookId, int userId, int total, int term, int forfeitCount, String institution, boolean student) {
         this.id = id;
         this.bookId = bookId;
         this.userId = userId;
-        this.deposit = deposit;
-        this.rental = rental;
+        this.total = total;
         this.term = term;
         this.forfeitCount = forfeitCount;
+        this.institution = institution;
+        this.student = student;
     }
 
     public int getId() {
@@ -89,22 +93,6 @@ public class BorrowedBook {
         this.userId = userId;
     }
 
-    public int getDeposit() {
-        return deposit;
-    }
-
-    public void setDeposit(int deposit) {
-        this.deposit = deposit;
-    }
-
-    public int getRental() {
-        return rental;
-    }
-
-    public void setRental(int rental) {
-        this.rental = rental;
-    }
-
     public int getTerm() {
         return term;
     }
@@ -119,6 +107,30 @@ public class BorrowedBook {
 
     public void setForfeitCount(int forfeitCount) {
         this.forfeitCount = forfeitCount;
+    }
+
+    public int getTotal() {
+        return total;
+    }
+
+    public void setTotal(int total) {
+        this.total = total;
+    }
+
+    public String getInstitution() {
+        return institution;
+    }
+
+    public void setInstitution(String institution) {
+        this.institution = institution;
+    }
+
+    public boolean getStudent() {
+        return student;
+    }
+
+    public void setStudent(boolean student) {
+        this.student = student;
     }
 
     @Override

@@ -21,9 +21,9 @@ import java.util.Optional;
 @RequestMapping("/librarian")
 public class LibrarianController {
 
-    private BorrowedBookService borrowedBookService;
+    private final BorrowedBookService borrowedBookService;
 
-    private BookService bookService;
+    private final BookService bookService;
 
     private static final int NO_FORFEIT = 0;
 
@@ -48,13 +48,13 @@ public class LibrarianController {
         }
         model.addAttribute("borrowedBook", optionalBorrowedBook.get());
         model.addAttribute("bookName", optionalBook.get().getName());
-        Librarian librarian = new Librarian();
         int forfeitCount = optionalBorrowedBook.get().getForfeitCount();
+
         if (forfeitCount == NO_FORFEIT) {
-            model.addAttribute("forfeitMessage", librarian.forfeitMessage(forfeitCount));
+            model.addAttribute("forfeitMessage", Librarian.forfeitMessage(forfeitCount));
             return "librarian/librarian";
         }
-        model.addAttribute("forfeitMessage", librarian.forfeitMessage(forfeitCount));
+        model.addAttribute("forfeitMessage", Librarian.forfeitMessage(forfeitCount));
         model.addAttribute("forfeit", forfeitCount + " рублей");
         return "librarian/librarian";
     }

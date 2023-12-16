@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -40,19 +40,28 @@
                 <tr>
                     <th scope="col">Название</th>
                     <th scope="col">Залог</th>
+                    <th scope="col">Стоимость проката с учетом скидки</th>
+                    <th scope="col">Общая сумма</th>
                     <th scope="col">Дата аренды книги</th>
                     <th scope="col">Дата возврата книги</th>
                 </tr>
                 </thead>
                 <tbody>
+                <br>
                 <h4><b>Список книг, взятых вами в библиотеке.</b><br><br></h4>
                 <tr th:each="borrowedBook: ${borrowedBooks}"
                     th:if="${borrowedBook.userId} == ${user.id}">
                     <td><a th:each="book : ${books}" th:if="${borrowedBook.bookId == book.id}" th:text="${book.name}"
-                           th:href="@{/librarian/{bbId}(bbId=${borrowedBook.id})}"></a></td>
-                    <td th:text="${borrowedBook.deposit}"/>
-                    <td th:text="${#temporals.format(borrowedBook.borrowDate, 'dd.MM.yyy')}"/>
-                    <td th:text="${#temporals.format(borrowedBook.refundDate, 'dd.MM.yyy')}"/>
+                           th:href="@{/librarian/{borrowedBook}(borrowedBook=${borrowedBook.id})}"></a></td>
+                    <td th:each="book : ${books}"
+                        th:if="${borrowedBook.bookId == book.id}"
+                        th:text="${book.depositPrice}"></td>
+                    <td th:each="book : ${books}"
+                        th:if="${borrowedBook.bookId == book.id}"
+                        th:text="${borrowedBook.total - book.depositPrice}"></td>
+                    <td th:text="${borrowedBook.total}"></td>
+                    <td th:text="${#temporals.format(borrowedBook.borrowDate, 'dd.MM.yyy')}"></td>
+                    <td th:text="${#temporals.format(borrowedBook.refundDate, 'dd.MM.yyy')}"></td>
                 </tr>
                 </tbody>
             </table>

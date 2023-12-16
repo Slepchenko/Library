@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -25,37 +25,38 @@
             <a class="nav-link text-secondary" th:href="@{/users/login}">Войти</a>
         </div>
         <div class="d-flex" th:if="${user.name != 'Гость'}">
-            <a class="nav-link text-secondary me-3" href="#" th:text="${user.name}" th:href="@{/personalAccount/personalAccountPage}"></a>
+            <a class="nav-link text-secondary me-3" href="#"
+               th:text="${user.name}" th:href="@{/personalAccount/personalAccountPage}"></a>
             <a class="nav-link text-secondary" th:href="@{/users/logout}">Выйти</a>
         </div>
     </nav>
     <div class="container">
         <form class="mt-3" th:action="@{/borrowedBooks/execution}" method="post" enctype="multipart/form-data">
-            <div class="mb-3">
-                <div class="mb-3 row">
-                    <p>В качестве залога вам нужно внести: </p>
-                    <h2 th:text="${deposit}"></h2>
-                    <h6>(В этом месте моделируется ситуация, когда пользователь библиотеки вносит сумму в качестве залога.
-                        Необходимо ввести указанное число для того, чтобы пройти оформление дальше)</h6>
-                </div>
-                <label for="deposit" class="form-label"><b>Внести залог</b></label>
-                <input type="hidden" class="form-control" id="id" name="id" th:value="1"/>
-                <input type="hidden" class="form-control" id="bookId" name="bookId" th:value="${book.id}"/>
-                <input type="hidden" class="form-control" id="userId" name="userId" th:value="${user.id}"/>
-                <input type="number" class="form-control" id="deposit" name="deposit"
-                       placeholder="Платежная система Mayday" required>
-                <input type="hidden" class="form-control" id="rental" name="rental" th:value="0"/>
-            </div>
-            <br><br><br><br>
+            <br><br>
+            <div><h1>Срок аренды книги</h1></div>
+            <br>
             <div class="mb-3">
                 <div class="col-7">
                     <p>Чем больше срок аренды, тем больше скидка!</p>
-                    <p>Скидка начинает действовать если вы берёте книгу на срок: 3-4 месяцев - 20%.</P>
-                    <p>Если берёте книгу на срок 5-6 месяцев - 40%!!!</p>
-                    <label for="term"><b>Выберите количество месяцев:</b></label>
+                    <p>Скидка начинает действовать, если вы берёте книгу на срок 4-10 дней - 20%.</P>
+                    <p>Если берёте книгу на срок 11-14 дней - 40%!!!</p>
+                    <label for="term"><b>Выберите количество дней:</b></label>
                     <select class="form-control" id="term" name="term" style="max-width:10%">
-                        <option th:each="month : ${monthNum}" th:value="${month}" th:text="${month}"></option>
+                        <option th:each="day : ${daysNumber}" th:value="${day}" th:text="${day}"></option>
                     </select>
+                    <input type="hidden" class="form-control" id="id" name="id" th:value="1"/>
+                    <input type="hidden" class="form-control" id="bookId" name="bookId" th:value="${book.id}"/>
+                    <input type="hidden" class="form-control" id="userId" name="userId" th:value="${user.id}"/>
+                    <input type="hidden" class="form-control" id="rental" name="rental" th:value="0"/>
+
+                </div>
+                <br>
+                <div class="mb-3 row">
+                    <h6>Если Вы являетесь студентом, Вы можете получить скидку 50% за аренду книги.</h6>
+                </div>
+                <div class="form-check mb-3">
+                    <label class="form-check-label" for="student">Подтверждаю, что я студент</label>
+                    <input type="checkbox" name="student" class="form-check-input" id="student">
                 </div>
             </div>
             <br><br><br><br>

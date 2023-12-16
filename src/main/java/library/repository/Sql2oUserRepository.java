@@ -31,8 +31,7 @@ public class Sql2oUserRepository implements UserRepository {
                     .addParameter("password", user.getPassword());
             int generatedId = query.executeUpdate().getKey(Integer.class);
             user.setId(generatedId);
-            Optional<User> optionalUser = Optional.of(user);
-            return optionalUser;
+            return Optional.of(user);
         } catch (Exception exception) {
             exception.getMessage();
         }
@@ -51,6 +50,7 @@ public class Sql2oUserRepository implements UserRepository {
         }
     }
 
+    @Override
     public String findUserNameById(int id) {
         try (Connection connection = sql2o.open()) {
             Query query = connection.createQuery("SELECT name FROM users WHERE id = :id")
@@ -62,7 +62,8 @@ public class Sql2oUserRepository implements UserRepository {
 
     public boolean delete(String email, String password) {
         try (Connection connection = sql2o.open()) {
-            Query query = connection.createQuery("DELETE FROM users WHERE email = :email and password = :password")
+            Query query = connection.createQuery
+                            ("DELETE FROM users WHERE email = :email and password = :password")
                     .addParameter("email", email)
                     .addParameter("password", password);
             int affectedRows = query.executeUpdate().getResult();
@@ -76,6 +77,5 @@ public class Sql2oUserRepository implements UserRepository {
             return query.setColumnMappings(User.COLUMN_MAPPING).executeAndFetch(User.class);
         }
     }
-
 
 }
