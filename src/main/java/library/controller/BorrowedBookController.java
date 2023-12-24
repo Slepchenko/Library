@@ -144,7 +144,7 @@ public class BorrowedBookController {
         }
         response.setContentType("application/octet-stream");
         String headerKey = "Content-Disposition";
-        String headerValue = "attachment; filename = " + borrowedBook.getId();
+        String headerValue = "attachment; filename = " + borrowedBook.getId() + ".txt";
         response.setHeader(headerKey, headerValue);
         try (ServletOutputStream outputStream = response.getOutputStream()) {
             byte[] content = Librarian.receipt(borrowedBook, book, userName).getBytes();
