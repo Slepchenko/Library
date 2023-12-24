@@ -1,4 +1,4 @@
-package library.logic;
+package library.filter;
 
 import library.model.User;
 import org.springframework.ui.Model;

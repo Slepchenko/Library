@@ -1,6 +1,6 @@
 package library.controller;
 
-import library.logic.AddUserModel;
+import library.filter.AddUserModel;
 import library.model.Book;
 import library.service.BookService;
 import library.service.BorrowedBookService;

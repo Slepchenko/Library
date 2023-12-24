@@ -1,6 +1,6 @@
 package library.controller;
 
-import library.logic.AddUserModel;
+import library.filter.AddUserModel;
 import library.service.BookService;
 import library.service.BorrowedBookService;
 import net.jcip.annotations.ThreadSafe;

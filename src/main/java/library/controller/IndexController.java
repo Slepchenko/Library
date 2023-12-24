@@ -1,6 +1,6 @@
 package library.controller;
 
-import library.logic.AddUserModel;
+import library.filter.AddUserModel;
 import net.jcip.annotations.ThreadSafe;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
