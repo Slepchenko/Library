@@ -62,8 +62,8 @@ public class Sql2oUserRepository implements UserRepository {
 
     public boolean delete(String email, String password) {
         try (Connection connection = sql2o.open()) {
-            Query query = connection.createQuery
-                            ("DELETE FROM users WHERE email = :email and password = :password")
+            Query query = connection.createQuery(
+                    "DELETE FROM users WHERE email = :email and password = :password")
                     .addParameter("email", email)
                     .addParameter("password", password);
             int affectedRows = query.executeUpdate().getResult();
