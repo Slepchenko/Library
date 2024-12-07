@@ -5,16 +5,20 @@ create table files
     path varchar not null unique
 );
 
-create table books
-(
-	id serial primary key,
-	name varchar not null,
-	author varchar not null,
-	deposit_price int not null,
-	rental_price int not null,
-	genre varchar not null,
-	file_id int references files (id) not null,
-	description varchar not null
+CREATE TABLE category (
+   id SERIAL PRIMARY KEY,
+   name varchar(128) not null
+);
+
+CREATE TABLE book (
+   id SERIAL PRIMARY KEY,
+   name varchar(256) not null,
+   author varchar(128),
+   description text,
+   deposit_price int not null,
+   rental_price int not null,
+   image_url varchar(128),
+   category_id varchar not null references category(id)
 );
 
 create table users
@@ -32,13 +36,11 @@ create table borrowed_books
 	book_id int unique references books (id) not null,
 	user_id int references users (id) not null,
 	total int not null,
-    term int not null,
 	borrow_date timestamp not null,
 	refund_date timestamp not null,
 	forfeit_count int not null,
 	institution varchar,
 	student boolean not null
-
 );
 
 insert into files(name, path) values('book1', '/book1.webp');

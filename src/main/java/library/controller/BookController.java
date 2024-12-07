@@ -4,8 +4,8 @@ import library.filter.AddUserModel;
 import library.model.Book;
 import library.service.BookService;
 import library.service.BorrowedBookService;
-import library.service.FileService;
 import library.service.SimpleBookService;
+import lombok.AllArgsConstructor;
 import net.jcip.annotations.ThreadSafe;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,23 +16,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpSession;
 import java.util.Optional;
 
-@ThreadSafe
 @Controller
 @RequestMapping("/books")
+@AllArgsConstructor
 public class BookController {
 
     private final BookService bookService;
 
-    private final FileService fileService;
-
     private final BorrowedBookService borrowedBookService;
-
-    public BookController(
-            SimpleBookService bookService, FileService fileService, BorrowedBookService borrowedBookService) {
-        this.bookService = bookService;
-        this.fileService = fileService;
-        this.borrowedBookService = borrowedBookService;
-    }
 
     @GetMapping
     public String getAll(Model model, HttpSession session) {
@@ -56,9 +47,8 @@ public class BookController {
             return "errors/404";
         }
         model.addAttribute("book", optionalBook.get());
-        model.addAttribute("deposit", "Залог " + optionalBook.get().getDepositPrice() + " рублей");
-        model.addAttribute("rental", "Стоимость аренды книги " + optionalBook.get().getRentalPrice() + " рублей в месяц");
-        model.addAttribute("file", fileService.getFileById(optionalBook.get().getFileId()).get().getPath());
+
+        model.addAttribute("file", bookService.findById(id).get().getImage_url());
         return "books/book";
     }
 

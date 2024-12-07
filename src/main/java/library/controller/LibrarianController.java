@@ -6,6 +6,7 @@ import library.model.Book;
 import library.model.BorrowedBook;
 import library.service.BookService;
 import library.service.BorrowedBookService;
+import lombok.AllArgsConstructor;
 import net.jcip.annotations.ThreadSafe;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -55,7 +56,6 @@ public class LibrarianController {
             return "librarian/librarian";
         }
         model.addAttribute("forfeitMessage", Librarian.forfeitMessage(forfeitCount));
-        model.addAttribute("forfeit", forfeitCount + " рублей");
         return "librarian/librarian";
     }
 

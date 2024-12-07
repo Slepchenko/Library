@@ -1,13 +1,13 @@
 package library.controller;
 
 import library.filter.AddUserModel;
-import library.logic.FinallyPrice;
 import library.logic.Librarian;
 import library.model.Book;
 import library.model.BorrowedBook;
 import library.service.BookService;
 import library.service.BorrowedBookService;
 import library.service.UserService;
+import lombok.AllArgsConstructor;
 import net.jcip.annotations.ThreadSafe;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +22,7 @@ import java.util.Optional;
 @ThreadSafe
 @Controller
 @RequestMapping("/borrowedBooks")
+@AllArgsConstructor
 public class BorrowedBookController {
 
     private final BookService bookService;
@@ -32,14 +33,7 @@ public class BorrowedBookController {
 
     private final UserService userService;
 
-    private final static int[] DAYS_NUMBER = new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
-
-    public BorrowedBookController(
-            BookService bookService, BorrowedBookService borrowedBookService, UserService userService) {
-        this.bookService = bookService;
-        this.borrowedBookService = borrowedBookService;
-        this.userService = userService;
-    }
+    private final static int[] DAYS_NUMBER = new int[]{14, 30, 60, 90};
 
     @GetMapping("/{id}")
     public String getCreationPage(Model model, @PathVariable int id, HttpSession session) {
@@ -49,7 +43,6 @@ public class BorrowedBookController {
             model.addAttribute("message", "Книга не найдена");
             return "errors/404";
         }
-        model.addAttribute("deposit",  optionalBook.get().getDepositPrice() + " рублей");
         model.addAttribute("book", optionalBook.get());
         model.addAttribute("daysNumber", DAYS_NUMBER);
         return "borrowedBooks/create";
@@ -64,21 +57,15 @@ public class BorrowedBookController {
             model.addAttribute("message", "Книга не найдена");
             return "errors/404";
         }
-        Book book = optionalBook.get();
-        int discountRental = FinallyPrice.getFinallyPrice(saveBorrowedBook.getTerm(), book.getDepositPrice(),
-                book.getRentalPrice(), saveBorrowedBook.getStudent());
         model.addAttribute("borrowedBook", saveBorrowedBook);
         model.addAttribute("bookMessage", optionalBook.get().getName());
         model.addAttribute("termMessage", borrowedBook.getTerm() + " дней");
-        model.addAttribute("priceMessage", discountRental + " рублей");
-        model.addAttribute("discountMessage", FinallyPrice.discount(saveBorrowedBook.getTerm()));
         return "/borrowedBooks/pay";
     }
 
     @PostMapping("/pay")
     public String save(Model model, @ModelAttribute BorrowedBook borrowedBook, HttpSession session) {
         AddUserModel.checkInMenu(model, session);
-        saveBorrowedBook.setTotal(borrowedBook.getTotal());
         saveBorrowedBook.setInstitution(borrowedBook.getInstitution());
         Optional<Book> optionalBook = bookService.findById(saveBorrowedBook.getBookId());
         if (optionalBook.isEmpty()) {
@@ -86,18 +73,6 @@ public class BorrowedBookController {
             return "errors/404";
         }
         model.addAttribute("borrowedBook", saveBorrowedBook);
-        Book book = optionalBook.get();
-        int discountRental = FinallyPrice.getFinallyPrice(
-                saveBorrowedBook.getTerm(), book.getDepositPrice(), book.getRentalPrice(), saveBorrowedBook.getStudent()
-        );
-        if (saveBorrowedBook.getTotal() > discountRental) {
-            model.addAttribute("message", "Сумма превосходит требуемую, попробуйте ещё раз");
-            return "/errors/404";
-        }
-        if (saveBorrowedBook.getTotal() < discountRental) {
-            model.addAttribute("message", "Внесенной суммы недостаточно, попробуйте ещё раз");
-            return "/errors/404";
-        }
         try {
             borrowedBookService.save(saveBorrowedBook);
             return "/borrowedBooks/successfully";
@@ -116,11 +91,9 @@ public class BorrowedBookController {
             return "errors/404";
         }
         Optional<Book> optionalBook = bookService.findById(optionalBorrowedBook.get().getBookId());
-        int deposit = optionalBook.get().getDepositPrice();
         if (!borrowedBookService.deleteById(id)) {
             model.addAttribute("message", "Книга с указанным идентификатором не найдена");
         }
-        model.addAttribute("deposit", deposit + " рублей.");
         return "/librarian/successfully";
     }
 

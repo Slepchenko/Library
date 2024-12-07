@@ -17,8 +17,8 @@ public class Librarian {
     public static String forfeitMessage(int forfeitCount) {
         return switch (forfeitCount) {
             case NO_PRICE -> "Книга в идеальном состоянии, всё хорошо, можете сдавать!";
-            case PRICE_MIN -> "Книга имеет незначительные повреждения, за которые нужно доплатить. С вас: ";
-            default -> "Книга имеет серьезные повреждения которые Вам обойдутся в: ";
+            case PRICE_MIN -> "Книга имеет незначительные повреждения!";
+            default -> "Книга имеет серьезные повреждения!";
         };
     }
 
@@ -34,21 +34,12 @@ public class Librarian {
                 .append("Сроком до: ")
                 .append(borrowedBook.getRefundDate().format(formatter))
                 .append(System.lineSeparator())
-                .append("Внесенный залог: ")
-                .append(book.getDepositPrice())
-                .append(" рублей")
-                .append(System.lineSeparator())
-                .append("Внесенная сумма аренды книги с учётом скидок: ")
-                .append(borrowedBook.getTotal() - book.getDepositPrice()).append(" рублей")
-                .append(System.lineSeparator())
-                .append("Общая сумма: ")
-                .append(borrowedBook.getTotal()).append(" рублей")
                 .append(System.lineSeparator())
                 .append(System.lineSeparator())
                 .append(System.lineSeparator())
                 .append("Библиотекарь Слепченко Александр Сергеевич ")
                 .append(borrowedBook.getBorrowDate().format(formatter));
-        if (!borrowedBook.getStudent()) {
+        if (!borrowedBook.isStudent()) {
             return message.toString();
         }
         return addInstitution(message.toString(), borrowedBook.getInstitution());
@@ -67,5 +58,4 @@ public class Librarian {
         }
         return str.toString();
     }
-
 }
